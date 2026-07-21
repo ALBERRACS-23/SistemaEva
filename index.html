@@ -1,92 +1,2492 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="h-full bg-slate-50">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Sistema EVA</title>
+    <title>TutoDocs - Sistema Modular de Gestión de Tutoría</title>
+    <!-- Tailwind CSS para diseño ágil y moderno -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome para iconos visuales -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Font Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .glass { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); }
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom scrollbar para una UI premium */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
     </style>
 </head>
-<body class="bg-slate-50 min-h-screen flex items-center justify-center p-4">
+<body class="h-full flex flex-col text-slate-800">
 
-    <div class="w-full max-w-md">
-        <div class="text-center mb-8">
-            <div class="bg-indigo-600 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-indigo-200">
-                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5s3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-                </svg>
+<div class="flex h-screen overflow-hidden">
+    <!-- SIDEBAR (Barra de Navegación Lateral Modular) -->
+    <aside class="hidden md:flex md:flex-shrink-0 flex-col w-64 bg-slate-900 text-white">
+        <!-- Logo Header -->
+        <div class="flex items-center justify-between h-16 px-6 bg-slate-950 border-b border-slate-800">
+            <div class="flex items-center space-x-3">
+                <div class="p-2 bg-indigo-600 rounded-lg">
+                    <i class="fa-solid fa-graduation-cap text-white text-lg"></i>
+                </div>
+                <div>
+                    <h1 class="text-sm font-bold tracking-wider uppercase">TutoDocs</h1>
+                    <p class="text-[10px] text-slate-400">Sistema Intranet Modular</p>
+                </div>
             </div>
-            <h1 class="text-3xl font-black text-slate-800 tracking-tight">Sistema EVA</h1>
-            <p class="text-slate-500 font-medium">Plataforma de Gestión de Notas</p>
+        </div>
+        
+        <!-- SECTOR 1: MÓDULOS DE LA PLATAFORMA -->
+        <div class="px-4 pt-4">
+            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-2 mb-2">Módulos del Sistema</p>
+            <div class="space-y-1">
+                <button onclick="switchModule('docs')" id="mod-btn-docs" class="w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold transition bg-indigo-600 text-white">
+                    <span class="flex items-center space-x-2.5">
+                        <i class="fa-solid fa-folder-open text-sm"></i>
+                        <span>Carga de Documentos</span>
+                    </span>
+                    <span class="bg-indigo-500 text-[9px] px-1.5 py-0.5 rounded-full font-black">ACTIVO</span>
+                </button>
+                <button onclick="switchModule('cases')" id="mod-btn-cases" class="w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold transition text-slate-400 hover:bg-slate-800 hover:text-white">
+                    <span class="flex items-center space-x-2.5">
+                        <i class="fa-solid fa-clipboard-list text-sm"></i>
+                        <span>Bitácora de Casos</span>
+                    </span>
+                    <span class="bg-slate-800 text-[8px] text-slate-400 px-1.5 py-0.5 rounded uppercase">Próximamente</span>
+                </button>
+                <button onclick="switchModule('meetings')" id="mod-btn-meetings" class="w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold transition text-slate-400 hover:bg-slate-800 hover:text-white">
+                    <span class="flex items-center space-x-2.5">
+                        <i class="fa-solid fa-handshake-angle text-sm"></i>
+                        <span>Citaciones a Padres</span>
+                    </span>
+                    <span class="bg-slate-800 text-[8px] text-slate-400 px-1.5 py-0.5 rounded uppercase">Próximamente</span>
+                </button>
+            </div>
         </div>
 
-        <div class="bg-white p-8 rounded-[2.5rem] shadow-xl shadow-slate-200/60 border border-slate-100">
-            <h2 class="text-xl font-bold text-slate-700 mb-6 text-center">Bienvenido</h2>
-            
-            <button id="btnLoginGoogle" class="w-full flex items-center justify-center gap-3 bg-white border-2 border-slate-100 hover:border-indigo-100 hover:bg-indigo-50 text-slate-700 font-bold py-4 px-6 rounded-2xl transition-all duration-300 group">
-                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/action/google.svg" class="w-6 h-6" alt="Google">
-                <span>Continuar con Google</span>
+        <div class="h-px bg-slate-800 my-4 mx-4"></div>
+
+        <!-- SECTOR 2: NAVEGACIÓN INTERNA (Varía según el Rol) -->
+        <div class="flex-1 px-4 space-y-4 overflow-y-auto">
+            <!-- Menú Coordinador -->
+            <div id="sidebar-coord-menu">
+                <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-2 mb-2">Panel Coordinador</p>
+                <nav class="space-y-1">
+                    <button onclick="changeView('dashboard')" id="nav-dashboard" class="nav-btn w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-xs font-medium transition bg-slate-800 text-white">
+                        <i class="fa-solid fa-chart-line w-4"></i>
+                        <span>Dashboard General</span>
+                    </button>
+                    <button onclick="changeView('tutores')" id="nav-tutores" class="nav-btn w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-xs font-medium transition text-slate-300 hover:bg-slate-800 hover:text-white">
+                        <i class="fa-solid fa-user-tie w-4"></i>
+                        <span>Lista de Tutores</span>
+                    </button>
+                    <button onclick="changeView('monitoreo')" id="nav-monitoreo" class="nav-btn w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-xs font-medium transition text-slate-300 hover:bg-slate-800 hover:text-white">
+                        <i class="fa-solid fa-check-double w-4"></i>
+                        <span>Matriz Evaluadora</span>
+                    </button>
+                    <button onclick="changeView('reportes')" id="nav-reportes" class="nav-btn w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-xs font-medium transition text-slate-300 hover:bg-slate-800 hover:text-white">
+                        <i class="fa-solid fa-file-invoice w-4"></i>
+                        <span>Reportes de Avance</span>
+                    </button>
+                </nav>
+            </div>
+
+            <!-- Menú Tutor -->
+            <div id="sidebar-tutor-menu" class="hidden">
+                <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-2 mb-2">Espacio de Tutor</p>
+                <nav class="space-y-1">
+                    <button onclick="changeView('tutor-dashboard')" id="nav-tutor-dashboard" class="nav-btn w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-xs font-medium transition bg-slate-800 text-white">
+                        <i class="fa-solid fa-circle-user w-4"></i>
+                        <span>Mi Panel de Tutor</span>
+                    </button>
+                    <button onclick="changeView('tutor-matriz')" id="nav-tutor-matriz" class="nav-btn w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-xs font-medium transition text-slate-300 hover:bg-slate-800 hover:text-white">
+                        <i class="fa-solid fa-file-arrow-up w-4"></i>
+                        <span>Cargar mis Materiales</span>
+                    </button>
+                </nav>
+            </div>
+        </div>
+        
+        <!-- Perfil rápido en pie de sidebar -->
+        <div class="p-4 bg-slate-950 border-t border-slate-800 flex items-center space-x-3">
+            <img id="sidebar-avatar" src="https://placehold.co/80x80/6366f1/ffffff?text=CO" alt="Avatar" class="w-10 h-10 rounded-full border border-slate-700">
+            <div class="overflow-hidden">
+                <h4 id="sidebar-user-name" class="text-xs font-bold truncate">Coordinador Principal</h4>
+                <p id="sidebar-user-role" class="text-[10px] text-slate-400 truncate">Sede Central</p>
+            </div>
+        </div>
+    </aside>
+
+    <!-- MAIN WRAPPER (Contenedor Principal) -->
+    <div class="flex flex-col flex-1 min-w-0 overflow-hidden bg-slate-50">
+        <!-- HEADER SUPERIOR -->
+        <header class="flex items-center justify-between h-16 px-6 bg-white border-b border-slate-200 z-10">
+            <!-- Botón toggle de móvil -->
+            <button class="md:hidden text-slate-600 hover:text-slate-900 focus:outline-none" onclick="toggleMobileMenu()">
+                <i class="fa-solid fa-bars text-xl"></i>
             </button>
+            
+            <!-- Selector de Roles Estilizado (Modo de Operación) -->
+            <div class="flex items-center space-x-4">
+                <span id="view-title" class="hidden sm:inline text-sm font-bold text-slate-800">Panel de Control</span>
+                <div class="flex bg-slate-100 p-1 rounded-xl border border-slate-200">
+                    <button onclick="setRole('coordinador')" id="role-btn-coord" class="px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center space-x-1.5 bg-white text-slate-900 shadow-sm">
+                        <i class="fa-solid fa-user-shield text-[10px]"></i>
+                        <span>Coordinador</span>
+                    </button>
+                    <button onclick="setRole('tutor')" id="role-btn-tutor" class="px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center space-x-1.5 text-slate-500 hover:text-slate-900">
+                        <i class="fa-solid fa-chalkboard-user text-[10px]"></i>
+                        <span>Tutor</span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Acciones rápidas / Simulación de Inicio de Sesión de Tutores -->
+            <div class="flex items-center space-x-4">
+                <div id="sim-tutor-dropdown-container" class="hidden flex items-center space-x-1.5 bg-slate-50 border border-slate-200 px-2 py-1 rounded-xl">
+                    <span class="text-[10px] font-bold text-slate-500 uppercase">Simular Tutor:</span>
+                    <select id="sim-tutor-select" onchange="onSimulatedTutorChange()" class="bg-transparent text-xs font-extrabold focus:outline-none text-indigo-700 cursor-pointer">
+                        <!-- Poblado mediante JS -->
+                    </select>
+                </div>
 
-            <div class="mt-8 text-center">
-                <p class="text-xs text-slate-400 font-bold uppercase tracking-widest">Acceso exclusivo para personal</p>
+                <div class="h-6 w-px bg-slate-200"></div>
+
+                <button onclick="triggerResetConfirmation()" class="text-xs text-rose-600 hover:text-rose-800 border border-rose-200 hover:bg-rose-50 px-2.5 py-1.5 rounded-lg font-medium transition" title="Restablecer todos los datos">
+                    <i class="fa-solid fa-trash-arrow-up"></i> <span class="hidden lg:inline">Reiniciar Demo</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- MENU MÓVIL OVERLAY -->
+        <div id="mobile-sidebar" class="hidden fixed inset-0 z-40 md:hidden bg-slate-900/80 backdrop-blur-sm" onclick="toggleMobileMenu()">
+            <div class="w-64 max-w-xs h-full bg-slate-900 flex flex-col p-6 shadow-xl" onclick="event.stopPropagation()">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center space-x-3">
+                        <div class="p-2 bg-indigo-600 rounded-lg">
+                            <i class="fa-solid fa-graduation-cap text-white text-md"></i>
+                        </div>
+                        <span class="font-bold text-white text-sm">TutoDocs Mobile</span>
+                    </div>
+                    <button onclick="toggleMobileMenu()" class="text-slate-400 hover:text-white">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+                <!-- Menú Móvil Adaptativo según el Rol -->
+                <nav class="space-y-3 flex-1 overflow-y-auto" id="mobile-navigation-items">
+                    <!-- Rellenado por JS dinámicamente -->
+                </nav>
             </div>
         </div>
 
-        <p class="text-center mt-8 text-slate-400 text-sm">© 2024 Innovación Educativa</p>
+        <main class="flex-1 overflow-y-auto p-4 md:p-8">
+            <div class="max-w-7xl mx-auto space-y-6">
+                
+                <!-- NOTIFICACIONES TOAST EMULADAS -->
+                <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2"></div>
+
+                <!-- ============================================== -->
+                <!-- PÁGINAS GENERALES: MÓDULOS DE MARCO (CONCEPTO) -->
+                <!-- ============================================== -->
+                <section id="module-placeholder" class="hidden bg-white border border-slate-200 rounded-2xl p-12 text-center max-w-xl mx-auto my-12 shadow-sm space-y-4">
+                    <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center text-slate-400 text-3xl mx-auto">
+                        <i class="fa-solid fa-screwdriver-wrench"></i>
+                    </div>
+                    <h3 id="placeholder-title" class="text-xl font-bold text-slate-800">Módulo en Desarrollo</h3>
+                    <p id="placeholder-text" class="text-sm text-slate-500">Este módulo será integrado en la siguiente fase de desarrollo de la Intranet de Tutoría.</p>
+                    <button onclick="switchModule('docs')" class="px-4 py-2 bg-indigo-600 text-white rounded-lg text-xs font-bold hover:bg-indigo-700 transition">
+                        Volver a Gestión de Documentos
+                    </button>
+                </section>
+
+
+                <!-- ============================================== -->
+                <!-- SECCIÓN 1: VISTAS DEL COORDINADOR -->
+                <!-- ============================================== -->
+                
+                <!-- 1.1 VISTA: DASHBOARD COORDINADOR -->
+                <section id="view-dashboard" class="space-y-6">
+                    <!-- Banner de Bienvenida -->
+                    <div class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white p-6 rounded-2xl shadow-md relative overflow-hidden border border-indigo-950">
+                        <div class="absolute right-0 bottom-0 opacity-10 transform translate-x-12 translate-y-6">
+                            <i class="fa-solid fa-box-archive text-[200px]"></i>
+                        </div>
+                        <div class="relative z-10 max-w-2xl">
+                            <span class="bg-indigo-500/30 text-indigo-200 text-xs px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">Ciclo Académico 2026</span>
+                            <h2 class="text-2xl md:text-3xl font-extrabold mt-2 leading-tight">Monitoreo de Carga de Documentos - Área de Tutoría</h2>
+                            <p class="text-indigo-100 text-sm mt-2 font-normal leading-relaxed">
+                                Portal del Coordinador. Supervisa la carga de los materiales obligatorios para cada Unidad de Aprendizaje y evalúa el cumplimiento de los tutores.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Indicadores Numéricos Clave (Widgets) -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+                            <div>
+                                <p class="text-xs text-slate-500 font-semibold uppercase tracking-wider">Tutores Activos</p>
+                                <h3 id="stat-total-tutores" class="text-3xl font-bold text-slate-900 mt-1">0</h3>
+                                <p class="text-[11px] text-slate-400 mt-1">Aulas registradas</p>
+                            </div>
+                            <div class="p-3.5 bg-indigo-50 text-indigo-600 rounded-xl">
+                                <i class="fa-solid fa-users text-2xl"></i>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+                            <div>
+                                <p class="text-xs text-slate-500 font-semibold uppercase tracking-wider">Avance Global</p>
+                                <h3 id="stat-avance-porcentaje" class="text-3xl font-bold text-slate-900 mt-1">0%</h3>
+                                <div class="w-24 bg-slate-100 h-1.5 rounded-full mt-2 overflow-hidden">
+                                    <div id="stat-avance-bar" class="bg-indigo-600 h-full rounded-full" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="p-3.5 bg-blue-50 text-blue-600 rounded-xl">
+                                <i class="fa-solid fa-circle-nodes text-2xl"></i>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+                            <div>
+                                <p class="text-xs text-slate-500 font-semibold uppercase tracking-wider">Documentos Subidos</p>
+                                <h3 id="stat-total-subidos" class="text-3xl font-bold text-slate-900 mt-1">0 <span class="text-xs font-normal text-slate-400">/ <span id="stat-total-esperados">0</span></span></h3>
+                                <p class="text-[11px] text-emerald-600 mt-1 font-medium"><i class="fa-solid fa-cloud-arrow-up"></i> Cargas efectuadas</p>
+                            </div>
+                            <div class="p-3.5 bg-emerald-50 text-emerald-600 rounded-xl">
+                                <i class="fa-solid fa-file-invoice text-2xl"></i>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+                            <div>
+                                <p class="text-xs text-slate-500 font-semibold uppercase tracking-wider font-extrabold">Entregas Observadas</p>
+                                <h3 id="stat-total-observados" class="text-3xl font-bold text-rose-600 mt-1">0</h3>
+                                <p class="text-[11px] text-rose-500 mt-1 font-medium"><i class="fa-solid fa-circle-exclamation"></i> Requieren corrección</p>
+                            </div>
+                            <div class="p-3.5 bg-rose-50 text-rose-600 rounded-xl">
+                                <i class="fa-solid fa-triangle-exclamation text-2xl"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Gráficos & Distribución de Cumplimiento -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <!-- Distribución de Estados -->
+                        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col">
+                            <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-4">Estado de Auditoría General</h4>
+                            
+                            <div class="flex-1 flex flex-col justify-center space-y-4">
+                                <div>
+                                    <div class="flex justify-between text-xs font-medium mb-1">
+                                        <span class="text-emerald-700 flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500 mr-2"></span>Aprobados</span>
+                                        <span id="badge-pct-aprobados" class="font-bold text-slate-700">0%</span>
+                                    </div>
+                                    <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                                        <div id="prog-aprobados" class="bg-emerald-500 h-full rounded-full" style="width: 0%"></div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class="flex justify-between text-xs font-medium mb-1">
+                                        <span class="text-amber-700 flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-amber-500 mr-2"></span>Observados</span>
+                                        <span id="badge-pct-observados" class="font-bold text-slate-700">0%</span>
+                                    </div>
+                                    <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                                        <div id="prog-observados" class="bg-amber-500 h-full rounded-full" style="width: 0%"></div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class="flex justify-between text-xs font-medium mb-1">
+                                        <span class="text-blue-700 flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-blue-500 mr-2"></span>Pendientes de Revisión</span>
+                                        <span id="badge-pct-pendientes" class="font-bold text-slate-700">0%</span>
+                                    </div>
+                                    <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                                        <div id="prog-pendientes" class="bg-blue-500 h-full rounded-full" style="width: 0%"></div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class="flex justify-between text-xs font-medium mb-1">
+                                        <span class="text-slate-400 flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-slate-300 mr-2"></span>Pendientes de Carga</span>
+                                        <span id="badge-pct-vacio" class="font-bold text-slate-500">0%</span>
+                                    </div>
+                                    <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                                        <div id="prog-vacio" class="bg-slate-300 h-full rounded-full" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Actividad Reciente de Carga -->
+                        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm lg:col-span-2 flex flex-col">
+                            <div class="flex items-center justify-between mb-4">
+                                <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider">Actividad y Novedades de Carga</h4>
+                                <span class="text-[10px] bg-indigo-50 text-indigo-700 font-bold px-2 py-0.5 rounded-lg border border-indigo-150">Tiempo Real</span>
+                            </div>
+                            <div class="flex-1 overflow-y-auto max-h-[220px] space-y-3 pr-2" id="dashboard-activity-list">
+                                <!-- Se rellena vía JS -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 1.2 VISTA: DIRECTORY OF TUTORS -->
+                <section id="view-tutores" class="hidden space-y-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                        <div>
+                            <h3 class="text-xl font-bold text-slate-900">Directorio de Tutores y Aulas</h3>
+                            <p class="text-xs text-slate-500 mt-1">Inspección de las credenciales de los tutores y su desempeño de carga.</p>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <input type="text" id="tutor-search" oninput="renderTutors()" placeholder="Buscar tutor o grado..." class="px-4 py-2 text-sm border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white shadow-sm w-full sm:w-64">
+                            <button onclick="openNewTutorModal()" class="px-4 py-2 text-sm font-medium bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 shadow-sm whitespace-nowrap">
+                                <i class="fa-solid fa-plus mr-1.5"></i> Agregar Tutor
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Grid de Tutores -->
+                    <div id="tutors-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Se renderiza por JS -->
+                    </div>
+                </section>
+
+
+                <!-- 1.3 VISTA: MATRIZ DE CARGA (PANEL COORDINADOR COMPLETO) -->
+                <section id="view-monitoreo" class="hidden space-y-6">
+                    <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">
+                        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                            <div>
+                                <h3 class="text-base font-bold text-slate-900">Filtro de Inspección para Coordinación</h3>
+                                <p class="text-xs text-slate-500">Selecciona el docente para auditar las 8 UDAs de tutoría, sus semanas correspondientes y calificar el contenido.</p>
+                            </div>
+                        </div>
+
+                        <!-- Selectores en Cascada -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+                            <!-- Selector Tutor -->
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase mb-1.5">Docente Tutor a Evaluar</label>
+                                <select id="select-tutor" onchange="onSelectionChange()" class="w-full text-sm border border-slate-200 rounded-lg px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-slate-50 font-medium">
+                                    <!-- Cargado por JS -->
+                                </select>
+                            </div>
+
+                            <!-- Selector UDA (1-8) -->
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase mb-1.5">Unidad de Aprendizaje (UDA)</label>
+                                <div class="grid grid-cols-8 gap-1 bg-slate-100 p-1 rounded-lg" id="uda-selector-group">
+                                    <!-- Botones dinámicos -->
+                                </div>
+                            </div>
+
+                            <!-- Selector Semana (1-5) -->
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase mb-1.5">Semana de la UDA</label>
+                                <div class="grid grid-cols-5 gap-1 bg-slate-100 p-1 rounded-lg" id="semana-selector-group">
+                                    <!-- Botones dinámicos -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Matriz de Visualización de Documentos -->
+                    <div class="space-y-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 bg-slate-900 text-white px-4 py-3 rounded-xl border border-slate-800 shadow-sm">
+                            <span class="text-xs font-bold uppercase tracking-wider">
+                                <i class="fa-solid fa-chalkboard-user text-indigo-400 mr-2"></i> 
+                                Inspeccionando: <span id="label-active-tutor" class="text-indigo-200 font-extrabold">-</span> 
+                                | <span id="label-active-uda" class="text-indigo-200 font-extrabold">-</span> 
+                                | <span id="label-active-semana" class="text-indigo-200 font-extrabold">-</span>
+                            </span>
+                            <div class="flex items-center space-x-2 text-xs">
+                                <span class="font-bold text-slate-400">Progreso UDA de este tutor:</span>
+                                <span id="label-active-uda-progress" class="font-extrabold bg-indigo-600 text-white px-2 py-0.5 rounded">0%</span>
+                            </div>
+                        </div>
+
+                        <!-- Grid de 4 Materiales Obligatorios -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6" id="coordinador-materials-grid">
+                            <!-- Las tarjetas de materiales se generan vía JS -->
+                        </div>
+                    </div>
+                </section>
+
+
+                <!-- 1.4 VISTA: REPORTES CONSOLIDADOS -->
+                <section id="view-reportes" class="hidden space-y-6">
+                    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+                            <div>
+                                <h3 class="text-lg font-bold text-slate-900">Cuadro General de Cumplimiento de Tutorías</h3>
+                                <p class="text-xs text-slate-500">Listado consolidado del avance escolar, aprobación de bitácoras y materiales.</p>
+                            </div>
+                            <div>
+                                <button onclick="window.print()" class="px-4 py-2 text-sm font-medium border border-slate-200 rounded-lg hover:bg-slate-50 text-slate-700 transition shadow-sm">
+                                    <i class="fa-solid fa-print mr-2"></i> Imprimir Reporte de Coordinación
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="overflow-x-auto border border-slate-100 rounded-xl">
+                            <table class="min-w-full divide-y divide-slate-200">
+                                <thead class="bg-slate-50">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Tutor / Aula</th>
+                                        <th scope="col" class="px-6 py-3 text-center text-xs font-bold text-slate-500 uppercase tracking-wider">Progreso Anual</th>
+                                        <th scope="col" class="px-6 py-3 text-center text-xs font-bold text-slate-500 uppercase tracking-wider">Aprobados</th>
+                                        <th scope="col" class="px-6 py-3 text-center text-xs font-bold text-slate-500 uppercase tracking-wider font-extrabold text-rose-600">Observados</th>
+                                        <th scope="col" class="px-6 py-3 text-center text-xs font-bold text-slate-500 uppercase tracking-wider">En Revisión</th>
+                                        <th scope="col" class="px-6 py-3 text-center text-xs font-bold text-slate-500 uppercase tracking-wider">Sin Cargar</th>
+                                        <th scope="col" class="px-6 py-3 text-right text-xs font-bold text-slate-500 uppercase tracking-wider">Acción</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="reporte-tabla-body" class="bg-white divide-y divide-slate-200 text-xs">
+                                    <!-- Generado dinámicamente -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+
+                <!-- ============================================== -->
+                <!-- SECCIÓN 2: VISTAS DEL TUTOR (DOCENTE) -->
+                <!-- ============================================== -->
+                
+                <!-- 2.1 DASHBOARD PERSONAL DEL TUTOR -->
+                <section id="view-tutor-dashboard" class="hidden space-y-6">
+                    <div class="bg-gradient-to-r from-indigo-700 via-indigo-900 to-slate-900 text-white p-6 rounded-2xl shadow-md border border-indigo-700">
+                        <div class="flex items-center space-x-4">
+                            <div id="tutor-dash-initials" class="w-16 h-16 rounded-full bg-white text-indigo-950 flex items-center justify-center font-black text-xl tracking-wider shadow-md">
+                                -
+                            </div>
+                            <div>
+                                <span class="bg-indigo-500/45 text-white text-[10px] px-2.5 py-1 rounded-full font-bold uppercase tracking-widest">Portal Docente</span>
+                                <h2 id="tutor-dash-welcome" class="text-xl md:text-2xl font-bold mt-1">¡Bienvenido!</h2>
+                                <p id="tutor-dash-classroom" class="text-xs text-indigo-100 mt-1">Cargo de Tutoría: -</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Métricas del Tutor Activo -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                            <span class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Mi Porcentaje de Avance</span>
+                            <div class="flex items-baseline space-x-2 mt-1">
+                                <span id="tutor-stat-percent" class="text-3xl font-black text-indigo-600">0%</span>
+                                <span id="tutor-stat-docs-ratio" class="text-xs text-slate-400">0 / 160 documentos</span>
+                            </div>
+                            <div class="w-full bg-slate-100 h-1.5 rounded-full mt-2 overflow-hidden">
+                                <div id="tutor-stat-bar" class="bg-indigo-600 h-full rounded-full" style="width: 0%"></div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+                            <div>
+                                <span class="text-[10px] text-slate-500 font-bold uppercase tracking-wider block">Documentos Aprobados</span>
+                                <span id="tutor-stat-approved" class="text-3xl font-black text-emerald-600 mt-1 block">0</span>
+                                <span class="text-[10px] text-emerald-600 mt-1 block"><i class="fa-solid fa-circle-check"></i> Verificados correctamente</span>
+                            </div>
+                            <div class="p-3 bg-emerald-50 text-emerald-600 rounded-lg">
+                                <i class="fa-regular fa-face-smile text-xl"></i>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+                            <div>
+                                <span class="text-[10px] text-slate-500 font-bold uppercase tracking-wider block">Documentos Observados</span>
+                                <span id="tutor-stat-observed" class="text-3xl font-black text-amber-500 mt-1 block">0</span>
+                                <span class="text-[10px] text-amber-600 mt-1 block"><i class="fa-solid fa-triangle-exclamation"></i> Requieren tu corrección</span>
+                            </div>
+                            <div class="p-3 bg-amber-50 text-amber-500 rounded-lg">
+                                <i class="fa-regular fa-lightbulb text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Panel de Observaciones Recientes -->
+                    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-4">
+                        <div class="flex items-center justify-between">
+                            <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider">Historial de Observaciones de Coordinación</h4>
+                            <span class="text-xs font-bold text-rose-500 bg-rose-50 px-2 py-0.5 rounded-md border border-rose-100">Atención Requerida</span>
+                        </div>
+                        <div id="tutor-observados-list" class="space-y-3">
+                            <!-- Se rellena vía JS -->
+                        </div>
+                    </div>
+                </section>
+
+
+                <!-- 2.2 MATRIZ DE CARGA EXCLUSIVA DEL TUTOR -->
+                <section id="view-tutor-matriz" class="hidden space-y-6">
+                    <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">
+                        <div>
+                            <h3 class="text-base font-bold text-slate-900">Panel de Envío de Archivos</h3>
+                            <p class="text-xs text-slate-500">Selecciona la Unidad de Aprendizaje (UDA) de tutoría y la Semana correspondiente para realizar el envío de tus materiales.</p>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Selector UDA (1-8) -->
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase mb-1.5">Unidad de Aprendizaje (UDA)</label>
+                                <div class="grid grid-cols-8 gap-1 bg-slate-100 p-1 rounded-lg" id="tutor-uda-selector">
+                                    <!-- Botones dinámicos generados por JS -->
+                                </div>
+                            </div>
+
+                            <!-- Selector Semana (1-5) -->
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase mb-1.5">Semana de la UDA</label>
+                                <div class="grid grid-cols-5 gap-1 bg-slate-100 p-1 rounded-lg" id="tutor-semana-selector">
+                                    <!-- Botones dinámicos generados por JS -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Panel de Carga Activa para Tutor -->
+                    <div class="space-y-4">
+                        <div class="bg-slate-900 text-white px-4 py-3 rounded-xl flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 shadow-sm">
+                            <span class="text-xs font-bold uppercase tracking-wider">
+                                <i class="fa-solid fa-file-arrow-up text-indigo-400 mr-2"></i> 
+                                Mi Registro: <span id="tutor-matriz-label" class="text-indigo-200 font-extrabold">-</span> 
+                                | <span id="tutor-uda-label" class="text-indigo-200 font-extrabold">-</span> 
+                                | <span id="tutor-semana-label" class="text-indigo-200 font-extrabold">-</span>
+                            </span>
+                            <span id="tutor-matriz-uda-progress" class="text-xs font-extrabold bg-indigo-600 text-white px-2 py-0.5 rounded">Progreso UDA: 0%</span>
+                        </div>
+
+                        <!-- Grid de Materiales para el Tutor -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="tutor-materials-grid">
+                            <!-- Generado dinámicamente por JS -->
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
     </div>
+</div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+<!-- ============================================== -->
+<!-- MODALES INTERACTIVOS (Revisión, Carga, Agregar) -->
+<!-- ============================================== -->
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyDwh4DIzzxRyPPzMxCZaIGcdywo-8_h5rk",
-            authDomain: "eva-estudiantes.firebaseapp.com",
-            databaseURL: "https://eva-estudiantes-default-rtdb.firebaseio.com",
-            projectId: "eva-estudiantes",
-            storageBucket: "eva-estudiantes.firebasestorage.app",
-            messagingSenderId: "692305850400",
-            appId: "1:692305850400:web:2b15a925a9669438ad8c45"
+<!-- MODAL: DETALLES Y REVISIÓN DE DOCUMENTO (CALIFICADOR DE COORDINADOR) -->
+<div id="modal-evaluacion" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-lg w-full shadow-2xl border border-slate-100 overflow-hidden" onclick="event.stopPropagation()">
+        <!-- Header -->
+        <div class="bg-slate-900 text-white px-6 py-4 flex items-center justify-between">
+            <div>
+                <h3 class="text-xs font-bold uppercase tracking-wide text-indigo-400">Auditoría y Retroalimentación</h3>
+                <p id="eval-title-material" class="text-base font-semibold truncate mt-0.5">Nombre del Documento</p>
+            </div>
+            <button onclick="closeEvalModal()" class="text-slate-400 hover:text-white transition">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+        </div>
+
+        <!-- Body -->
+        <div class="p-6 space-y-5">
+            <!-- Info contextual -->
+            <div class="grid grid-cols-2 gap-4 p-4 bg-slate-50 rounded-xl text-xs border border-slate-100">
+                <div>
+                    <span class="block text-slate-400 font-bold uppercase">TUTOR</span>
+                    <span id="eval-doc-tutor" class="font-bold text-slate-800">-</span>
+                </div>
+                <div>
+                    <span class="block text-slate-400 font-bold uppercase">UBICACIÓN</span>
+                    <span id="eval-doc-location" class="font-bold text-slate-800">-</span>
+                </div>
+                <div class="col-span-2 pt-2 border-t border-slate-100 flex justify-between items-center">
+                    <div>
+                        <span class="block text-slate-400 font-bold uppercase">ARCHIVO ADJUNTO</span>
+                        <span id="eval-doc-name" class="font-semibold text-indigo-600 underline truncate block max-w-[200px]">-</span>
+                    </div>
+                    <span id="eval-doc-size" class="text-slate-500 font-bold">-</span>
+                </div>
+            </div>
+
+            <!-- VISTA PREVIA MOCKUP -->
+            <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Pre-visualización Rápida</label>
+                <div class="bg-slate-100 rounded-xl p-4 border border-dashed border-slate-200 flex flex-col items-center justify-center text-center py-6">
+                    <i class="fa-solid fa-file-pdf text-rose-500 text-4xl mb-2"></i>
+                    <p class="text-xs font-bold text-slate-700">Visor de Archivos PDF Integrado</p>
+                    <p class="text-[10px] text-slate-400 mt-1 max-w-xs">Simulación segura del recurso subido por el tutor.</p>
+                    <button onclick="simulateDownload()" class="mt-3 px-3 py-1.5 text-[10px] bg-white border border-slate-200 rounded-lg hover:bg-slate-50 font-semibold inline-flex items-center space-x-1 shadow-sm">
+                        <i class="fa-solid fa-download"></i>
+                        <span>Descargar Archivo</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Modificar Estado (Estatus) -->
+            <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Dictamen del Coordinador</label>
+                <div class="grid grid-cols-3 gap-2">
+                    <button type="button" onclick="setEvalStatus('pending')" id="btn-status-pending" class="py-2.5 text-xs font-semibold rounded-lg border text-center transition flex flex-col items-center justify-center gap-1">
+                        <i class="fa-solid fa-clock text-xs"></i>
+                        <span>En Revisión</span>
+                    </button>
+                    <button type="button" onclick="setEvalStatus('approved')" id="btn-status-approved" class="py-2.5 text-xs font-semibold rounded-lg border text-center transition flex flex-col items-center justify-center gap-1">
+                        <i class="fa-solid fa-circle-check text-xs"></i>
+                        <span>Aprobado</span>
+                    </button>
+                    <button type="button" onclick="setEvalStatus('observed')" id="btn-status-observed" class="py-2.5 text-xs font-semibold rounded-lg border text-center transition flex flex-col items-center justify-center gap-1">
+                        <i class="fa-solid fa-circle-exclamation text-xs"></i>
+                        <span>Observado</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Caja de Comentarios de Retroalimentación -->
+            <div>
+                <label for="eval-comments" class="block text-xs font-bold text-slate-500 uppercase mb-2">Recomendaciones y Observaciones</label>
+                <textarea id="eval-comments" rows="3" placeholder="Redacta indicaciones específicas de corrección si el documento ha sido observado o recomendaciones pedagógicas..." class="w-full text-xs border border-slate-200 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="bg-slate-50 px-6 py-4 flex items-center justify-end space-x-2 border-t border-slate-100">
+            <button onclick="closeEvalModal()" class="px-4 py-2 text-xs font-medium bg-white text-slate-700 hover:bg-slate-100 border border-slate-200 rounded-lg transition">
+                Cerrar
+            </button>
+            <button onclick="saveEvalData()" class="px-4 py-2 text-xs font-medium bg-indigo-600 text-white hover:bg-indigo-700 rounded-lg transition shadow-md">
+                Guardar Dictamen
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<!-- MODAL: SUBIR DOCUMENTO (CARGA LOCAL) -->
+<div id="modal-upload" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full shadow-2xl border border-slate-100 overflow-hidden" onclick="event.stopPropagation()">
+        <div class="bg-indigo-900 text-white px-6 py-4 flex items-center justify-between">
+            <div>
+                <h3 class="text-xs font-bold uppercase tracking-wide text-indigo-300 font-bold">Subida de Documento Escolar</h3>
+                <p id="upload-title-material" class="text-sm font-semibold truncate">Material de Tutoría</p>
+            </div>
+            <button onclick="closeUploadModal()" class="text-indigo-200 hover:text-white transition">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+        </div>
+
+        <!-- Formulario simulado de carga -->
+        <div class="p-6 space-y-4">
+            <div class="p-3 bg-indigo-50 rounded-lg text-xs text-indigo-800 flex space-x-2.5 border border-indigo-100">
+                <i class="fa-solid fa-info-circle text-md mt-0.5 flex-shrink-0"></i>
+                <p>El archivo se almacenará virtualmente dentro de la memoria de tu navegador (localStorage). Elige un archivo simulado o de prueba.</p>
+            </div>
+
+            <!-- Caja de Archivo Dropzone -->
+            <div class="border-2 border-dashed border-slate-200 rounded-xl p-6 text-center hover:border-indigo-500 transition cursor-pointer relative bg-slate-50" id="dropzone" onclick="document.getElementById('file-input').click()">
+                <input type="file" id="file-input" class="hidden" onchange="handleFileSelect(event)">
+                <i class="fa-solid fa-cloud-arrow-up text-slate-400 text-3xl mb-2"></i>
+                <p id="dropzone-text-1" class="text-xs font-bold text-slate-700">Haz clic aquí para seleccionar un archivo</p>
+                <p id="dropzone-text-2" class="text-[10px] text-slate-400 mt-1">Formatos admitidos: PDF, Excel, Word, PPT</p>
+                
+                <!-- Feedback temporal de archivo seleccionado -->
+                <div id="selected-file-info" class="hidden mt-2 p-2 bg-emerald-50 text-emerald-800 rounded-lg border border-emerald-200 text-xs font-semibold inline-flex items-center gap-1.5 mx-auto">
+                    <i class="fa-solid fa-check-circle"></i>
+                    <span id="selected-file-name" class="truncate max-w-[220px]">archivo.pdf</span>
+                </div>
+            </div>
+
+            <!-- Peso ficticio automático o nombre personalizado -->
+            <div>
+                <label for="custom-file-title" class="block text-xs font-bold text-slate-500 uppercase mb-1.5">Renombrar Archivo (Opcional)</label>
+                <input type="text" id="custom-file-title" placeholder="Ej: Registro_Asistencia_2B_Semana3" class="w-full text-xs border border-slate-200 rounded-lg px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white">
+            </div>
+        </div>
+
+        <div class="bg-slate-50 px-6 py-4 flex items-center justify-end space-x-2 border-t border-slate-100">
+            <button onclick="closeUploadModal()" class="px-4 py-2 text-xs font-medium bg-white text-slate-700 hover:bg-slate-100 border border-slate-200 rounded-lg transition">
+                Cancelar
+            </button>
+            <button onclick="saveUploadedFile()" class="px-4 py-2 text-xs font-medium bg-indigo-600 text-white hover:bg-indigo-700 rounded-lg transition shadow-md">
+                Subir y Registrar
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<!-- MODAL: REGISTRAR NUEVO TUTOR -->
+<div id="modal-new-tutor" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full shadow-2xl border border-slate-100 overflow-hidden" onclick="event.stopPropagation()">
+        <div class="bg-slate-950 text-white px-6 py-4 flex items-center justify-between">
+            <div>
+                <h3 class="text-sm font-bold uppercase tracking-wide text-indigo-400">Registrar Nuevo Tutor</h3>
+                <p class="text-xs text-slate-400 mt-0.5">Crea una vacante de tutoría e inicializa sus 8 UDAs.</p>
+            </div>
+            <button onclick="closeNewTutorModal()" class="text-slate-400 hover:text-white transition">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+        </div>
+
+        <div class="p-6 space-y-4">
+            <div>
+                <label for="new-tutor-name" class="block text-xs font-bold text-slate-500 uppercase mb-1">Nombre Completo del Docente</label>
+                <input type="text" id="new-tutor-name" placeholder="Prof. Juan Carlos Pérez" class="w-full text-xs border border-slate-200 rounded-lg px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            </div>
+            
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label for="new-tutor-grado" class="block text-xs font-bold text-slate-500 uppercase mb-1">Grado / Sección</label>
+                    <input type="text" id="new-tutor-grado" placeholder="4to Año 'A' Sec." class="w-full text-xs border border-slate-200 rounded-lg px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+                <div>
+                    <label for="new-tutor-phone" class="block text-xs font-bold text-slate-500 uppercase mb-1">Teléfono</label>
+                    <input type="text" id="new-tutor-phone" placeholder="987654321" class="w-full text-xs border border-slate-200 rounded-lg px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+            </div>
+
+            <div>
+                <label for="new-tutor-email" class="block text-xs font-bold text-slate-500 uppercase mb-1">Correo Electrónico</label>
+                <input type="email" id="new-tutor-email" placeholder="juan.perez@colegio.edu.pe" class="w-full text-xs border border-slate-200 rounded-lg px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            </div>
+
+            <!-- Avatar color picker mock -->
+            <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase mb-1.5">Color de Avatar Identificador</label>
+                <div class="flex space-x-2">
+                    <button onclick="selectAvatarColor('3b82f6')" class="w-8 h-8 rounded-full bg-blue-500 border-2 border-white ring-2 ring-indigo-500 focus:outline-none" id="color-3b82f6"></button>
+                    <button onclick="selectAvatarColor('ec4899')" class="w-8 h-8 rounded-full bg-pink-500 border-2 border-white focus:outline-none" id="color-ec4899"></button>
+                    <button onclick="selectAvatarColor('10b981')" class="w-8 h-8 rounded-full bg-emerald-500 border-2 border-white focus:outline-none" id="color-10b981"></button>
+                    <button onclick="selectAvatarColor('f59e0b')" class="w-8 h-8 rounded-full bg-amber-500 border-2 border-white focus:outline-none" id="color-f59e0b"></button>
+                    <button onclick="selectAvatarColor('8b5cf6')" class="w-8 h-8 rounded-full bg-purple-500 border-2 border-white focus:outline-none" id="color-8b5cf6"></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-slate-50 px-6 py-4 flex items-center justify-end space-x-2 border-t border-slate-100">
+            <button onclick="closeNewTutorModal()" class="px-4 py-2 text-xs font-medium bg-white text-slate-700 hover:bg-slate-100 border border-slate-200 rounded-lg transition">
+                Cancelar
+            </button>
+            <button onclick="saveNewTutor()" class="px-4 py-2 text-xs font-medium bg-indigo-600 text-white hover:bg-indigo-700 rounded-lg transition shadow-md">
+                Registrar Tutoría
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<!-- MODAL DE CONFIRMACIÓN PERSONALIZADO (REEMPLAZO DE CONFIRM) -->
+<div id="modal-confirm" class="hidden fixed inset-0 z-[100] overflow-y-auto bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-sm w-full shadow-2xl border border-slate-200 overflow-hidden" onclick="event.stopPropagation()">
+        <div class="p-6 text-center space-y-4">
+            <div id="confirm-icon-box" class="w-14 h-14 rounded-full flex items-center justify-center text-2xl mx-auto">
+                <i id="confirm-icon" class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <div class="space-y-1">
+                <h4 id="confirm-title" class="text-base font-extrabold text-slate-900">¿Estás seguro?</h4>
+                <p id="confirm-message" class="text-xs text-slate-500 leading-relaxed">Esta acción es permanente y puede alterar los historiales registrados de la tutoría.</p>
+            </div>
+        </div>
+        <div class="bg-slate-50 px-6 py-4 flex items-center justify-center space-x-2 border-t border-slate-100">
+            <button id="confirm-btn-cancel" class="flex-1 px-4 py-2 text-xs font-semibold bg-white text-slate-700 hover:bg-slate-100 border border-slate-200 rounded-lg transition">
+                No, cancelar
+            </button>
+            <button id="confirm-btn-accept" class="flex-1 px-4 py-2 text-xs font-semibold text-white rounded-lg transition shadow-md">
+                Sí, confirmar
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<!-- ============================================== -->
+<!-- ARCHIVOS DE COMPORTAMIENTO JAVASCRIPT -->
+<!-- ============================================== -->
+<script>
+// ==========================================
+// CONSTANTES Y CONFIGURACIONES
+// ==========================================
+const TOTAL_UDAS = 8;
+const SEMANAS_POR_UDA = 5;
+const MATERIALES_POR_SEMANA = 4;
+
+const MATERIAL_NAMES = {
+    1: "Planificación de Tutoría Grupal",
+    2: "Diapositivas o Recursos de Soporte",
+    3: "Registro y Ficha de Asistencia",
+    4: "Reporte de Casos / Derivaciones"
+};
+
+// Configuración de confirmaciones dinámicas
+let onConfirmSuccessCallback = null;
+
+// Color del avatar del nuevo tutor
+let selectedNewTutorColor = "3b82f6"; 
+
+// Archivo temporal subido
+let tempSelectedFile = null;
+
+// Ubicaciones de interacción activa
+let currentEvalTutorId = null;
+let currentEvalUda = null;
+let currentEvalSemana = null;
+let currentEvalMaterialId = null;
+
+let currentUploadTutorId = null;
+let currentUploadUda = null;
+let currentUploadSemana = null;
+let currentUploadMaterialId = null;
+
+// ==========================================
+// DATA INICIAL PRE-CARGADA (DEMO CORPO)
+// ==========================================
+const DEFAULT_TUTORS = [
+    {
+        id: "tutor-1",
+        name: "Prof. Carlos Mendoza",
+        email: "carlos.mendoza@colegio.edu.pe",
+        phone: "981 234 567",
+        aula: "1er Año 'A' Sec.",
+        color: "3b82f6", 
+        udas: {}
+    },
+    {
+        id: "tutor-2",
+        name: "Prof. María Elena Rostorowski",
+        email: "maria.rostorowski@colegio.edu.pe",
+        phone: "974 561 238",
+        aula: "2do Año 'B' Sec.",
+        color: "ec4899", 
+        udas: {}
+    },
+    {
+        id: "tutor-3",
+        name: "Prof. José Antonio Encinas",
+        email: "j.encinas@colegio.edu.pe",
+        phone: "912 345 678",
+        aula: "3er Año 'A' Sec.",
+        color: "10b981", 
+        udas: {}
+    },
+    {
+        id: "tutor-4",
+        name: "Dra. Clorinda Matto de Turner",
+        email: "c.matto@colegio.edu.pe",
+        phone: "931 789 456",
+        aula: "4to Año 'C' Sec.",
+        color: "f59e0b", 
+        udas: {}
+    },
+    {
+        id: "tutor-5",
+        name: "Prof. Jorge Basadre Grohmann",
+        email: "jorge.basadre@colegio.edu.pe",
+        phone: "922 456 712",
+        aula: "5to Año 'B' Sec.",
+        color: "8b5cf6", 
+        udas: {}
+    }
+];
+
+// Generar una estructura de documentos vacía
+function generateEmptyUdaStructure() {
+    const udas = {};
+    for (let u = 1; u <= TOTAL_UDAS; u++) {
+        udas[`uda-${u}`] = {};
+        for (let s = 1; s <= SEMANAS_POR_UDA; s++) {
+            udas[`uda-${u}`][`semana-${s}`] = {};
+            for (let m = 1; m <= MATERIALES_POR_SEMANA; m++) {
+                udas[`uda-${u}`][`semana-${s}`][`material-${m}`] = {
+                    status: "none", // none, pending, approved, observed
+                    fileName: "",
+                    fileSize: "",
+                    uploadedAt: "",
+                    comments: ""
+                };
+            }
+        }
+    }
+    return udas;
+}
+
+// Poblar datos iniciales para enriquecer el demo
+function populateMockData(tutorsList) {
+    tutorsList.forEach((tutor, index) => {
+        tutor.udas = generateEmptyUdaStructure();
+        
+        // Cargar materiales de prueba en UDA 1, Semana 1
+        tutor.udas['uda-1']['semana-1']['material-1'] = {
+            status: index % 2 === 0 ? "approved" : "observed",
+            fileName: `Planificacion_Semana1_Aula_${tutor.aula.replace(/\s+/g, '_')}.pdf`,
+            fileSize: "1.2 MB",
+            uploadedAt: "2026-07-01",
+            comments: index % 2 === 0 ? "Competencias pedagógicas muy bien formuladas." : "Por favor, especifica más detalladamente la dinámica de inicio de sesión grupal."
         };
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getDatabase(app);
-        const provider = new GoogleAuthProvider();
+        tutor.udas['uda-1']['semana-1']['material-2'] = {
+            status: index === 3 ? "pending" : "approved",
+            fileName: `Recurso_Material_Diapositivas_Autoestima.pptx`,
+            fileSize: "4.8 MB",
+            uploadedAt: "2026-07-02",
+            comments: ""
+        };
+
+        if (index !== 3) {
+            tutor.udas['uda-1']['semana-1']['material-3'] = {
+                status: "approved",
+                fileName: `Control_Tutor_Asistencia_Semana1.xlsx`,
+                fileSize: "420 KB",
+                uploadedAt: "2026-07-03",
+                comments: "Asistencias completas y correctas."
+            };
+        }
+        
+        if (index === 0 || index === 2) {
+            tutor.udas['uda-1']['semana-2']['material-1'] = {
+                status: "pending",
+                fileName: `Plan_Tutorado_Individual_S2.pdf`,
+                fileSize: "980 KB",
+                uploadedAt: "2026-07-08",
+                comments: ""
+            };
+        }
+    });
+}
+
+// Variables del Estado General de la App
+let AppState = {
+    tutors: [],
+    currentModule: 'docs', // docs, cases, meetings
+    currentRole: 'coordinador', // coordinador, tutor
+    loggedTutorId: '', // ID del tutor simulado en sesión
+    currentView: 'dashboard', // Variable para la vista activa del rol
+    activeTutorId: '', // Tutor que el coordinador está inspeccionando
+    activeUda: 1, // UDA inspeccionada
+    activeSemana: 1, // Semana inspeccionada
+    recentActivity: []
+};
 
 
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                window.location.href = 'registros.html';
-            }
-        });
+// Carga los datos por defecto inicializando la estructura de tutorías de prueba
+function loadDefaultData() {
+    const tutorsCopy = JSON.parse(JSON.stringify(DEFAULT_TUTORS));
+    populateMockData(tutorsCopy);
+    return tutorsCopy;
+}
 
-        document.getElementById('btnLoginGoogle').addEventListener('click', async () => {
-            try {
-                const result = await signInWithPopup(auth, provider);
-                const user = result.user;
+// Guarda el estado actual de los tutores en el localStorage y actualiza el listado de actividades
+function saveDataToLocalStorage() {
+    localStorage.setItem('tutoriadocs_modular_v1', JSON.stringify(AppState.tutors));
+    buildRecentActivities();
+}
 
+// Despliega el modal de confirmación personalizado de la plataforma (reemplazo de alert/confirm)
+function showConfirmModal(title, message, type, onConfirm) {
+    const modal = document.getElementById('modal-confirm');
+    const titleEl = document.getElementById('confirm-title');
+    const msgEl = document.getElementById('confirm-message');
+    const iconBox = document.getElementById('confirm-icon-box');
+    const icon = document.getElementById('confirm-icon');
+    const btnAccept = document.getElementById('confirm-btn-accept');
+    const btnCancel = document.getElementById('confirm-btn-cancel');
 
-                const snapshot = await get(ref(db, `usuarios/${user.uid}`));
-                
-                if (snapshot.exists()) {
-                    console.log("Usuario reconocido:", snapshot.val().rol);
-                    window.location.href = 'registros.html';
-                } else {
-                  window.location.href = 'registros.html';
+    titleEl.innerText = title;
+    msgEl.innerText = message;
+
+    if (type === 'rose') {
+        iconBox.className = "w-14 h-14 rounded-full flex items-center justify-center text-2xl mx-auto bg-rose-50 text-rose-600";
+        icon.className = "fa-solid fa-trash-arrow-up";
+        btnAccept.className = "flex-1 px-4 py-2 text-xs font-semibold text-white bg-rose-600 hover:bg-rose-700 rounded-lg transition shadow-md";
+    } else {
+        iconBox.className = "w-14 h-14 rounded-full flex items-center justify-center text-2xl mx-auto bg-amber-50 text-amber-600";
+        icon.className = "fa-solid fa-triangle-exclamation";
+        btnAccept.className = "flex-1 px-4 py-2 text-xs font-semibold text-white bg-amber-500 hover:bg-amber-600 rounded-lg transition shadow-md";
+    }
+
+    modal.classList.remove('hidden');
+
+    btnAccept.onclick = function() {
+        modal.classList.add('hidden');
+        if (onConfirm) onConfirm();
+    };
+
+    btnCancel.onclick = function() {
+        modal.classList.add('hidden');
+    };
+}
+
+// Activa el proceso de confirmación segura para restablecer toda la base de datos de la demo
+function triggerResetConfirmation() {
+    showConfirmModal(
+        "¿Restablecer Base de Datos?",
+        "Esta acción eliminará de manera definitiva todos los archivos virtuales, tutores creados y calificaciones de coordinación registradas.",
+        "rose",
+        function() {
+            localStorage.removeItem('tutoriadocs_modular_v1');
+            initAppState();
+            renderAll();
+            showToast("La base de datos de la demo se ha restablecido.", "success");
+        }
+    );
+}
+
+window.onload = function() {
+    initAppState();
+    renderAll();
+    showToast("Intranet TutoDocs lista y cargada localmente.", "success");
+};
+
+function initAppState() {
+    const savedData = localStorage.getItem('tutoriadocs_modular_v1');
+    if (savedData) {
+        try {
+            AppState.tutors = JSON.parse(savedData);
+        } catch (e) {
+            AppState.tutors = loadDefaultData();
+        }
+    } else {
+        AppState.tutors = loadDefaultData();
+    }
+    
+    // Configurar estados iniciales de control
+    if (AppState.tutors.length > 0) {
+        AppState.activeTutorId = AppState.tutors[0].id;
+        AppState.loggedTutorId = AppState.tutors[0].id; // El primer tutor de la lista inicia sesión por defecto
+    }
+    AppState.activeUda = 1;
+    AppState.activeSemana = 1;
+    
+    // Construir lista de actividades
+    buildRecentActivities();
+}
+
+// ========================================================
+// MÉTRICAS ANALÍTICAS DE UNIDAD (UDA) Y SEMANAS PARA FILTROS
+// ========================================================
+
+function getUdaMetrics(tutor, udaNum) {
+    let uploaded = 0;
+    let approved = 0;
+    let observed = 0;
+    let pending = 0;
+    const total = SEMANAS_POR_UDA * MATERIALES_POR_SEMANA; // 20
+
+    if (tutor && tutor.udas && tutor.udas[`uda-${udaNum}`]) {
+        const udaData = tutor.udas[`uda-${udaNum}`];
+        for (let s = 1; s <= SEMANAS_POR_UDA; s++) {
+            if (udaData[`semana-${s}`]) {
+                for (let m = 1; m <= MATERIALES_POR_SEMANA; m++) {
+                    const doc = udaData[`semana-${s}`][`material-${m}`];
+                    if (doc && doc.status !== 'none') {
+                        uploaded++;
+                        if (doc.status === 'approved') approved++;
+                        if (doc.status === 'observed') observed++;
+                        if (doc.status === 'pending') pending++;
+                    }
                 }
-
-            } catch (error) {
-                console.error("Error en login:", error);
-                alert("Hubo un error al intentar iniciar sesión.");
             }
-        });
-    </script>
+        }
+    }
+    return { uploaded, approved, observed, pending, total };
+}
+
+function getSemanaMetrics(tutor, udaNum, semanaNum) {
+    let uploaded = 0;
+    let approved = 0;
+    let observed = 0;
+    let pending = 0;
+    const total = MATERIALES_POR_SEMANA; // 4
+
+    if (tutor && tutor.udas && tutor.udas[`uda-${udaNum}`] && tutor.udas[`uda-${udaNum}`][`semana-${semanaNum}`]) {
+        const semData = tutor.udas[`uda-${udaNum}`][`semana-${semanaNum}`];
+        for (let m = 1; m <= MATERIALES_POR_SEMANA; m++) {
+            const doc = semData[`material-${m}`];
+            if (doc && doc.status !== 'none') {
+                uploaded++;
+                if (doc.status === 'approved') approved++;
+                if (doc.status === 'observed') observed++;
+                if (doc.status === 'pending') pending++;
+            }
+        }
+    }
+    return { uploaded, approved, observed, pending, total };
+}
+
+function getSelectorStyle(metrics, isActive) {
+    const { uploaded, approved, observed, pending, total } = metrics;
+    
+    let baseClass = "flex flex-col items-center justify-between py-2 px-1 rounded-xl border text-center transition-all duration-200 relative cursor-pointer min-h-[56px] ";
+    let statusClasses = "";
+    let dotClass = "";
+    let labelColor = "";
+    
+    if (uploaded === 0) {
+        // Sin Cargar - Gris Neutro
+        statusClasses = "bg-slate-50 border-slate-200 text-slate-400 hover:bg-slate-100";
+        dotClass = "bg-slate-300";
+        labelColor = "text-slate-400";
+    } else if (observed > 0) {
+        // Alerta de corrección - Ámbar Pulsante
+        statusClasses = "bg-amber-50 border-amber-300 text-amber-800 hover:bg-amber-100 shadow-sm shadow-amber-100/50";
+        dotClass = "bg-amber-500 animate-pulse";
+        labelColor = "text-amber-600";
+    } else if (approved === total) {
+        // Completamente aprobado - Verde Esmeralda
+        statusClasses = "bg-emerald-50 border-emerald-300 text-emerald-800 hover:bg-emerald-100 shadow-sm shadow-emerald-100/50";
+        dotClass = "bg-emerald-500";
+        labelColor = "text-emerald-600 font-extrabold";
+    } else {
+        // En progreso / pendientes - Azul Cielo
+        statusClasses = "bg-sky-50 border-sky-200 text-sky-800 hover:bg-sky-100 shadow-sm shadow-sky-100/40";
+        dotClass = "bg-sky-500";
+        labelColor = "text-sky-500";
+    }
+    
+    if (isActive) {
+        // Resaltado elegante para selección activa
+        statusClasses += " ring-2 ring-indigo-600 ring-offset-2 scale-[1.04] z-10 font-black shadow-md border-transparent";
+    }
+    
+    return {
+        btnClass: baseClass + statusClasses,
+        dotClass: "w-1.5 h-1.5 rounded-full mt-1 " + dotClass,
+        labelClass: "text-[9px] font-bold mt-0.5 tracking-tighter " + labelColor
+    };
+}
+
+function buildRecentActivities() {
+    let activities = [];
+    AppState.tutors.forEach(tutor => {
+        for (let u = 1; u <= TOTAL_UDAS; u++) {
+            for (let s = 1; s <= SEMANAS_POR_UDA; s++) {
+                for (let m = 1; m <= MATERIALES_POR_SEMANA; m++) {
+                    const doc = tutor.udas[`uda-${u}`][`semana-${s}`][`material-${m}`];
+                    if (doc && doc.status !== 'none' && doc.uploadedAt) {
+                        activities.push({
+                            tutorName: tutor.name,
+                            aula: tutor.aula,
+                            uda: u,
+                            semana: s,
+                            materialNum: m,
+                            materialName: MATERIAL_NAMES[m],
+                            fileName: doc.fileName,
+                            uploadedAt: doc.uploadedAt,
+                            status: doc.status
+                        });
+                    }
+                }
+            }
+        }
+    });
+
+    activities.sort((a, b) => new Date(b.uploadedAt) - new Date(a.uploadedAt));
+    AppState.recentActivity = activities.slice(0, 10);
+}
+
+// ==========================================
+// ARQUITECTURA MODULAR (MODULE SWITCHER)
+// ==========================================
+function switchModule(moduleId) {
+    AppState.currentModule = moduleId;
+    
+    // Estilizar botones de módulos en la barra lateral
+    const modButtons = ['docs', 'cases', 'meetings'];
+    modButtons.forEach(id => {
+        const btn = document.getElementById(`mod-btn-${id}`);
+        if (!btn) return;
+        if (id === moduleId) {
+            btn.className = "w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold transition bg-indigo-600 text-white";
+            // Mostrar badge de activo
+            const badge = btn.querySelector('span:last-child');
+            if (badge) {
+                badge.className = "bg-indigo-500 text-[9px] px-1.5 py-0.5 rounded-full font-black";
+                badge.innerText = "ACTIVO";
+            }
+        } else {
+            btn.className = "w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold transition text-slate-400 hover:bg-slate-800 hover:text-white";
+            const badge = btn.querySelector('span:last-child');
+            if (badge) {
+                badge.className = "bg-slate-800 text-[8px] text-slate-400 px-1.5 py-0.5 rounded uppercase";
+                badge.innerText = "Próximamente";
+            }
+        }
+    });
+
+    if (moduleId === 'docs') {
+        document.getElementById('module-placeholder').classList.add('hidden');
+        // Restaurar la visualización del módulo principal
+        setRole(AppState.currentRole);
+    } else {
+        // Ocultar todas las vistas de documentos
+        hideAllDocumentViews();
+        
+        // Configurar títulos en placeholder
+        const titleEl = document.getElementById('placeholder-title');
+        const textEl = document.getElementById('placeholder-text');
+        
+        if (moduleId === 'cases') {
+            titleEl.innerText = "Bitácora Digital de Casos de Tutoría";
+            textEl.innerText = "Un canal seguro para que los tutores registren incidencias de comportamiento escolar, problemas de rendimiento académico y realicen derivaciones formales al departamento de Psicología.";
+        } else if (moduleId === 'meetings') {
+            titleEl.innerText = "Gestión de Citaciones y Entrevistas";
+            textEl.innerText = "Módulo para agendar citas formales con padres de familia, registrar los acuerdos pactados en las reuniones y llevar un historial unificado por cada estudiante.";
+        }
+        
+        document.getElementById('module-placeholder').classList.remove('hidden');
+        document.getElementById('view-title').innerText = "Módulo Próximo";
+    }
+}
+
+function hideAllDocumentViews() {
+    const views = [
+        'view-dashboard', 'view-tutores', 'view-monitoreo', 'view-reportes',
+        'view-tutor-dashboard', 'view-tutor-matriz'
+    ];
+    views.forEach(v => {
+        const el = document.getElementById(v);
+        if (el) el.classList.add('hidden');
+    });
+}
+
+// ==========================================
+// SEGURIDAD POR ROLES (COORDINADOR / TUTOR)
+// ==========================================
+function setRole(role) {
+    AppState.currentRole = role;
+    
+    // Alternar estilos en botones del header
+    const coordBtn = document.getElementById('role-btn-coord');
+    const tutorBtn = document.getElementById('role-btn-tutor');
+    
+    if (role === 'coordinador') {
+        coordBtn.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center space-x-1.5 bg-white text-slate-900 shadow-sm";
+        tutorBtn.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center space-x-1.5 text-slate-500 hover:text-slate-900";
+        
+        document.getElementById('sim-tutor-dropdown-container').classList.add('hidden');
+        document.getElementById('sidebar-coord-menu').classList.remove('hidden');
+        document.getElementById('sidebar-tutor-menu').classList.add('hidden');
+        
+        // Actualizar datos del perfil de la barra lateral
+        document.getElementById('sidebar-avatar').src = "https://placehold.co/80x80/6366f1/ffffff?text=CO";
+        document.getElementById('sidebar-user-name').innerText = "Coordinador Tutoría";
+        document.getElementById('sidebar-user-role').innerText = "Auditor Principal";
+
+        // Redirigir a vista inicial
+        changeView('dashboard');
+    } else {
+        tutorBtn.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center space-x-1.5 bg-white text-slate-900 shadow-sm";
+        coordBtn.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center space-x-1.5 text-slate-500 hover:text-slate-900";
+        
+        document.getElementById('sim-tutor-dropdown-container').classList.remove('hidden');
+        document.getElementById('sidebar-coord-menu').classList.add('hidden');
+        document.getElementById('sidebar-tutor-menu').classList.remove('hidden');
+
+        // Poblar datos del perfil del tutor activo
+        updateTutorProfileSidebar();
+
+        // Redirigir a panel docente
+        changeView('tutor-dashboard');
+    }
+}
+
+function updateTutorProfileSidebar() {
+    const tutor = AppState.tutors.find(t => t.id === AppState.loggedTutorId);
+    if (tutor) {
+        document.getElementById('sidebar-avatar').src = `https://placehold.co/80x80/${tutor.color}/ffffff?text=${getInitials(tutor.name)}`;
+        document.getElementById('sidebar-user-name').innerText = tutor.name;
+        document.getElementById('sidebar-user-role').innerText = tutor.aula;
+    }
+}
+
+function onSimulatedTutorChange() {
+    AppState.loggedTutorId = document.getElementById('sim-tutor-select').value;
+    updateTutorProfileSidebar();
+    initUdaSemanaSelectors(); // Actualiza los colores de los filtros basados en la data del nuevo tutor
+    if (AppState.currentView === 'tutor-dashboard') {
+        renderTutorDashboard();
+    } else if (AppState.currentView === 'tutor-matriz') {
+        renderTutorMatriz();
+    }
+    showToast("Sesión de tutor simulada cambiada.", "info");
+}
+
+// ==========================================
+// CONTROL DE NAVEGACIÓN DE VISTAS (SPA)
+// ==========================================
+function changeView(viewId) {
+    if (AppState.currentModule !== 'docs') return;
+    
+    AppState.currentView = viewId;
+    hideAllDocumentViews();
+    
+    // Mostrar la sección adecuada
+    const targetEl = document.getElementById(`view-${viewId}`);
+    if (targetEl) targetEl.classList.remove('hidden');
+    
+    // Actualizar estados de botones de la barra lateral
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.classList.remove('bg-indigo-600', 'text-white');
+        btn.classList.add('text-slate-300', 'hover:bg-slate-800', 'hover:text-white');
+    });
+    
+    const activeBtn = document.getElementById(`nav-${viewId}`);
+    if (activeBtn) {
+        activeBtn.classList.remove('text-slate-300', 'hover:bg-slate-800', 'hover:text-white');
+        activeBtn.classList.add('bg-indigo-600', 'text-white');
+    }
+    
+    updateViewTitle();
+    
+    // Renderizado según vista
+    if (viewId === 'dashboard') {
+        updateDashboardStats();
+        renderDashboardActivities();
+    } else if (viewId === 'tutores') {
+        renderTutors();
+    } else if (viewId === 'monitoreo') {
+        initUdaSemanaSelectors(); // Asegura colores actualizados antes de pintar matriz
+        renderActiveMatriz();
+    } else if (viewId === 'reportes') {
+        renderConsolidadoReport();
+    } else if (viewId === 'tutor-dashboard') {
+        renderTutorDashboard();
+    } else if (viewId === 'tutor-matriz') {
+        initUdaSemanaSelectors(); // Asegura colores actualizados antes de pintar matriz de tutor
+        renderTutorMatriz();
+    }
+}
+
+function updateViewTitle() {
+    const titles = {
+        'dashboard': 'Panel Coordinación',
+        'tutores': 'Directorio de Tutores',
+        'monitoreo': 'Matriz Evaluadora',
+        'reportes': 'Reporte Académico Consolidados',
+        'tutor-dashboard': 'Mi Progreso de Tutoría',
+        'tutor-matriz': 'Carga de Documentación Semanal'
+    };
+    document.getElementById('view-title').innerText = titles[AppState.currentView] || 'Área de Tutoría';
+}
+
+function toggleMobileMenu() {
+    const mobMenu = document.getElementById('mobile-sidebar');
+    mobMenu.classList.toggle('hidden');
+    if (!mobMenu.classList.contains('hidden')) {
+        renderMobileNavigation();
+    }
+}
+
+function renderMobileNavigation() {
+    const container = document.getElementById('mobile-navigation-items');
+    container.innerHTML = '';
+    
+    if (AppState.currentRole === 'coordinador') {
+        container.innerHTML = `
+            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-2">Coordinador</p>
+            <button onclick="changeView('dashboard'); toggleMobileMenu()" class="w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition text-slate-300 hover:bg-slate-800 hover:text-white">
+                <i class="fa-solid fa-chart-line w-5"></i>
+                <span>Dashboard General</span>
+            </button>
+            <button onclick="changeView('tutores'); toggleMobileMenu()" class="w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition text-slate-300 hover:bg-slate-800 hover:text-white">
+                <i class="fa-solid fa-user-tie w-5"></i>
+                <span>Lista de Tutores</span>
+            </button>
+            <button onclick="changeView('monitoreo'); toggleMobileMenu()" class="w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition text-slate-300 hover:bg-slate-800 hover:text-white">
+                <i class="fa-solid fa-check-double w-5"></i>
+                <span>Matriz Evaluadora</span>
+            </button>
+            <button onclick="changeView('reportes'); toggleMobileMenu()" class="w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition text-slate-300 hover:bg-slate-800 hover:text-white">
+                <i class="fa-solid fa-file-invoice w-5"></i>
+                <span>Reportes</span>
+            </button>
+        `;
+    } else {
+        container.innerHTML = `
+            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-2">Tutor</p>
+            <button onclick="changeView('tutor-dashboard'); toggleMobileMenu()" class="w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition text-slate-300 hover:bg-slate-800 hover:text-white">
+                <i class="fa-solid fa-circle-user w-5"></i>
+                <span>Mi Panel de Tutor</span>
+            </button>
+            <button onclick="changeView('tutor-matriz'); toggleMobileMenu()" class="w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition text-slate-300 hover:bg-slate-800 hover:text-white">
+                <i class="fa-solid fa-file-arrow-up w-5"></i>
+                <span>Cargar mis Materiales</span>
+            </button>
+        `;
+    }
+}
+
+function renderAll() {
+    updateDashboardStats();
+    renderDashboardActivities();
+    renderTutors();
+    initUdaSemanaSelectors();
+    renderTutorSelectDropdown();
+    renderActiveMatriz();
+    renderConsolidadoReport();
+    updateViewTitle();
+}
+
+// ==========================================
+// CÁLCULOS ANALÍTICOS DE PROGRESO
+// ==========================================
+function getTutorProgress(tutor) {
+    let uploadedCount = 0;
+    let approvedCount = 0;
+    let observedCount = 0;
+    let pendingCount = 0;
+    let totalExpected = TOTAL_UDAS * SEMANAS_POR_UDA * MATERIALES_POR_SEMANA; // 160
+
+    if (!tutor.udas) return { percent: 0, uploaded: 0, expected: totalExpected, approved: 0, observed: 0, pending: 0 };
+
+    for (let u = 1; u <= TOTAL_UDAS; u++) {
+        for (let s = 1; s <= SEMANAS_POR_UDA; s++) {
+            for (let m = 1; m <= MATERIALES_POR_SEMANA; m++) {
+                const doc = tutor.udas[`uda-${u}`][`semana-${s}`][`material-${m}`];
+                if (doc && doc.status !== 'none') {
+                    uploadedCount++;
+                    if (doc.status === 'approved') approvedCount++;
+                    if (doc.status === 'observed') observedCount++;
+                    if (doc.status === 'pending') pendingCount++;
+                }
+            }
+        }
+    }
+
+    const percent = Math.round((uploadedCount / totalExpected) * 100);
+    return {
+        percent,
+        uploaded: uploadedCount,
+        expected: totalExpected,
+        approved: approvedCount,
+        observed: observedCount,
+        pending: pendingCount
+    };
+}
+
+function getTutorUdaProgress(tutor, udaNum) {
+    let uploadedCount = 0;
+    let totalExpected = SEMANAS_POR_UDA * MATERIALES_POR_SEMANA; // 20
+
+    if (!tutor.udas || !tutor.udas[`uda-${udaNum}`]) return 0;
+
+    const udaData = tutor.udas[`uda-${udaNum}`];
+    for (let s = 1; s <= SEMANAS_POR_UDA; s++) {
+        for (let m = 1; m <= MATERIALES_POR_SEMANA; m++) {
+            const doc = udaData[`semana-${s}`][`material-${m}`];
+            if (doc && doc.status !== 'none') {
+                uploadedCount++;
+            }
+        }
+    }
+
+    return Math.round((uploadedCount / totalExpected) * 100);
+}
+
+function updateDashboardStats() {
+    const totalTutores = AppState.tutors.length;
+    document.getElementById('stat-total-tutores').innerText = totalTutores;
+
+    if (totalTutores === 0) {
+        document.getElementById('stat-avance-porcentaje').innerText = "0%";
+        document.getElementById('stat-avance-bar').style.width = "0%";
+        document.getElementById('stat-total-subidos').innerText = "0";
+        document.getElementById('stat-total-observados').innerText = "0";
+        return;
+    }
+
+    let globalUploaded = 0;
+    let globalApproved = 0;
+    let globalObserved = 0;
+    let globalPending = 0;
+    let globalExpected = totalTutores * TOTAL_UDAS * SEMANAS_POR_UDA * MATERIALES_POR_SEMANA;
+
+    AppState.tutors.forEach(tutor => {
+        const stats = getTutorProgress(tutor);
+        globalUploaded += stats.uploaded;
+        globalApproved += stats.approved;
+        globalObserved += stats.observed;
+        globalPending += stats.pending;
+    });
+
+    const globalPercent = Math.round((globalUploaded / globalExpected) * 100);
+
+    // Actualizar Widgets
+    document.getElementById('stat-avance-porcentaje').innerText = `${globalPercent}%`;
+    document.getElementById('stat-avance-bar').style.width = `${globalPercent}%`;
+    document.getElementById('stat-total-subidos').innerHTML = `${globalUploaded} <span class="text-xs font-normal text-slate-400">/ <span id="stat-total-esperados">${globalExpected}</span></span>`;
+    document.getElementById('stat-total-observados').innerText = globalObserved;
+
+    // Actualizar Distribución
+    const pctApp = globalExpected > 0 ? Math.round((globalApproved / globalExpected) * 100) : 0;
+    const pctObs = globalExpected > 0 ? Math.round((globalObserved / globalExpected) * 100) : 0;
+    const pctPen = globalExpected > 0 ? Math.round((globalPending / globalExpected) * 100) : 0;
+    const pctVac = globalExpected > 0 ? (100 - pctApp - pctObs - pctPen) : 0;
+
+    document.getElementById('badge-pct-aprobados').innerText = `${pctApp}%`;
+    document.getElementById('prog-aprobados').style.width = `${pctApp}%`;
+
+    document.getElementById('badge-pct-observados').innerText = `${pctObs}%`;
+    document.getElementById('prog-observados').style.width = `${pctObs}%`;
+
+    document.getElementById('badge-pct-pendientes').innerText = `${pctPen}%`;
+    document.getElementById('prog-pendientes').style.width = `${pctPen}%`;
+
+    document.getElementById('badge-pct-vacio').innerText = `${pctVac}%`;
+    document.getElementById('prog-vacio').style.width = `${pctVac}%`;
+}
+
+function renderDashboardActivities() {
+    const listContainer = document.getElementById('dashboard-activity-list');
+    listContainer.innerHTML = '';
+
+    if (AppState.recentActivity.length === 0) {
+        listContainer.innerHTML = `
+            <div class="text-center py-8 text-slate-400 text-xs">
+                <i class="fa-solid fa-hourglass-empty text-3xl mb-2"></i>
+                <p>No se registran cargas ni acciones recientes en el plantel.</p>
+            </div>
+        `;
+        return;
+    }
+
+    AppState.recentActivity.forEach(act => {
+        let statusBadge = '';
+        if (act.status === 'approved') {
+            statusBadge = `<span class="bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] px-2 py-0.5 rounded-full font-bold">Aprobado</span>`;
+        } else if (act.status === 'observed') {
+            statusBadge = `<span class="bg-amber-50 text-amber-700 border border-amber-200 text-[10px] px-2 py-0.5 rounded-full font-bold">Observado</span>`;
+        } else {
+            statusBadge = `<span class="bg-blue-50 text-blue-700 border border-blue-200 text-[10px] px-2 py-0.5 rounded-full font-bold">En Revisión</span>`;
+        }
+
+        const dateFormatted = new Date(act.uploadedAt + 'T00:00:00').toLocaleDateString('es-PE', { day: 'numeric', month: 'short' });
+
+        const row = document.createElement('div');
+        row.className = "flex items-center justify-between p-3 border border-slate-100 hover:bg-slate-50 rounded-xl transition duration-150 space-x-4";
+        row.innerHTML = `
+            <div class="flex items-center space-x-3 overflow-hidden">
+                <div class="flex-shrink-0 w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-xs">
+                    U${act.uda}
+                </div>
+                <div class="overflow-hidden">
+                    <h5 class="text-xs font-bold text-slate-900 truncate">${act.tutorName} <span class="text-slate-400 font-normal">(${act.aula})</span></h5>
+                    <p class="text-[10px] text-slate-500 truncate mt-0.5">Subió: <span class="font-semibold text-slate-700">${act.fileName}</span> (Semana ${act.semana})</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-3 flex-shrink-0">
+                ${statusBadge}
+                <span class="text-[10px] font-bold text-slate-400">${dateFormatted}</span>
+            </div>
+        `;
+        listContainer.appendChild(row);
+    });
+}
+
+// ==========================================
+// VISTA: DIRECTORY OF TUTORS (COORDINACIÓN)
+// ==========================================
+function renderTutors() {
+    const grid = document.getElementById('tutors-grid');
+    grid.innerHTML = '';
+    
+    const searchVal = document.getElementById('tutor-search').value.toLowerCase();
+    const filtered = AppState.tutors.filter(t => t.name.toLowerCase().includes(searchVal) || t.aula.toLowerCase().includes(searchVal));
+
+    if (filtered.length === 0) {
+        grid.innerHTML = `
+            <div class="col-span-full bg-white border border-slate-200 rounded-2xl p-12 text-center text-slate-400">
+                <i class="fa-solid fa-magnifying-glass text-4xl mb-3"></i>
+                <p class="text-sm font-semibold">No se encontraron tutores con ese criterio de búsqueda.</p>
+            </div>
+        `;
+        return;
+    }
+
+    filtered.forEach(tutor => {
+        const stats = getTutorProgress(tutor);
+
+        const card = document.createElement('div');
+        card.className = "bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden hover:shadow-md transition duration-200 flex flex-col justify-between";
+        card.innerHTML = `
+            <div class="p-6 space-y-4">
+                <!-- Encabezado con Iniciales y Aula -->
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-12 h-12 rounded-full text-white flex items-center justify-center font-black text-sm tracking-wider shadow-sm" style="background-color: #${tutor.color}">
+                            ${getInitials(tutor.name)}
+                        </div>
+                        <div class="overflow-hidden">
+                            <h4 class="text-sm font-extrabold text-slate-900 truncate leading-tight">${tutor.name}</h4>
+                            <p class="text-xs text-slate-500 font-semibold mt-0.5"><i class="fa-solid fa-chalkboard-user mr-1 text-slate-400"></i>${tutor.aula}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-1">
+                        <button onclick="editTutor('${tutor.id}')" class="p-1.5 text-slate-400 hover:text-indigo-600 hover:bg-slate-100 rounded-lg transition" title="Editar tutor">
+                            <i class="fa-solid fa-pencil text-xs"></i>
+                        </button>
+                        <button onclick="deleteTutor('${tutor.id}')" class="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-slate-100 rounded-lg transition" title="Eliminar tutor">
+                            <i class="fa-solid fa-trash text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Info de contacto rápida -->
+                <div class="text-[11px] text-slate-500 space-y-1 bg-slate-50 p-2.5 rounded-xl border border-slate-100">
+                    <p class="truncate"><i class="fa-regular fa-envelope mr-1.5 w-3 text-slate-400"></i>${tutor.email}</p>
+                    <p><i class="fa-solid fa-phone mr-1.5 w-3 text-slate-400"></i>${tutor.phone}</p>
+                </div>
+
+                <!-- Barra de Progreso General -->
+                <div>
+                    <div class="flex items-center justify-between text-xs font-semibold mb-1">
+                        <span class="text-slate-500 font-bold">Avance General</span>
+                        <span class="text-indigo-600 font-bold">${stats.percent}% (${stats.uploaded}/${stats.expected} docs)</span>
+                    </div>
+                    <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                        <div class="bg-indigo-600 h-full rounded-full transition-all duration-300" style="width: ${stats.percent}%"></div>
+                    </div>
+                </div>
+
+                <!-- desglose de estatus en miniatura -->
+                <div class="grid grid-cols-3 gap-2 text-center text-[10px] font-bold">
+                    <div class="bg-emerald-50 text-emerald-800 border border-emerald-100 py-1 rounded">
+                        ${stats.approved} Aprob.
+                    </div>
+                    <div class="bg-amber-50 text-amber-800 border border-amber-100 py-1 rounded">
+                        ${stats.observed} Obs.
+                    </div>
+                    <div class="bg-blue-50 text-blue-800 border border-blue-100 py-1 rounded">
+                        ${stats.pending} Rev.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botonera de Gestión -->
+            <div class="bg-slate-50 border-t border-slate-100 px-6 py-3 flex items-center justify-between">
+                <span class="text-[10px] text-slate-400 uppercase font-extrabold">Auditoría Docente</span>
+                <button onclick="goToTutorMatriz('${tutor.id}')" class="text-xs font-bold text-indigo-600 hover:text-indigo-800 hover:underline inline-flex items-center space-x-1">
+                    <span>Ver Expediente</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        `;
+        grid.appendChild(card);
+    });
+}
+
+function getInitials(name) {
+    let raw = name.replace("Prof.", "").replace("Dr.", "").replace("Dra.", "").trim();
+    let parts = raw.split(" ");
+    if (parts.length >= 2) {
+        return (parts[0][0] + parts[1][0]).toUpperCase();
+    }
+    return parts[0] ? parts[0][0].toUpperCase() : "T";
+}
+
+function goToTutorMatriz(tutorId) {
+    AppState.activeTutorId = tutorId;
+    changeView('monitoreo');
+}
+
+function openNewTutorModal() {
+    document.getElementById('modal-new-tutor').classList.remove('hidden');
+    document.getElementById('new-tutor-name').value = '';
+    document.getElementById('new-tutor-grado').value = '';
+    document.getElementById('new-tutor-phone').value = '';
+    document.getElementById('new-tutor-email').value = '';
+    selectAvatarColor('3b82f6');
+}
+
+function closeNewTutorModal() {
+    document.getElementById('modal-new-tutor').classList.add('hidden');
+}
+
+function selectAvatarColor(colorHex) {
+    selectedNewTutorColor = colorHex;
+    document.querySelectorAll('[id^="color-"]').forEach(btn => {
+        btn.classList.remove('ring-2', 'ring-indigo-500');
+    });
+    document.getElementById(`color-${colorHex}`).classList.add('ring-2', 'ring-indigo-500');
+}
+
+function saveNewTutor() {
+    const name = document.getElementById('new-tutor-name').value.trim();
+    const grado = document.getElementById('new-tutor-grado').value.trim();
+    const phone = document.getElementById('new-tutor-phone').value.trim();
+    const email = document.getElementById('new-tutor-email').value.trim();
+
+    if (!name || !grado || !phone || !email) {
+        showToast("Todos los campos de registro son obligatorios.", "error");
+        return;
+    }
+
+    const newTutor = {
+        id: "tutor-" + Date.now(),
+        name: name,
+        email: email,
+        phone: phone,
+        aula: grado,
+        color: selectedNewTutorColor,
+        udas: generateEmptyUdaStructure()
+    };
+
+    AppState.tutors.push(newTutor);
+    saveDataToLocalStorage();
+    closeNewTutorModal();
+    renderAll();
+    showToast(`El tutor ${name} ha sido registrado exitosamente.`, "success");
+}
+
+function editTutor(tutorId) {
+    const tutor = AppState.tutors.find(t => t.id === tutorId);
+    if (!tutor) return;
+
+    const newName = prompt("Editar Nombre completo del Docente:", tutor.name);
+    if (newName === null) return; 
+    if (!newName.trim()) {
+        showToast("El nombre del tutor no puede quedar vacío.", "error");
+        return;
+    }
+
+    const newAula = prompt("Editar Grado / Sección:", tutor.aula);
+    if (newAula === null) return;
+    
+    tutor.name = newName.trim();
+    if (newAula.trim()) tutor.aula = newAula.trim();
+
+    saveDataToLocalStorage();
+    renderAll();
+    showToast("Los datos del tutor han sido actualizados.", "success");
+}
+
+function deleteTutor(tutorId) {
+    const tutor = AppState.tutors.find(t => t.id === tutorId);
+    if (!tutor) return;
+
+    showConfirmModal(
+        "¿Deseas eliminar al tutor?",
+        `Esta acción eliminará de forma irreversible a ${tutor.name} y todas las entregas/registros de sus 8 UDAs.`,
+        "rose",
+        function() {
+            AppState.tutors = AppState.tutors.filter(t => t.id !== tutorId);
+            if (AppState.activeTutorId === tutorId && AppState.tutors.length > 0) {
+                AppState.activeTutorId = AppState.tutors[0].id;
+            }
+            saveDataToLocalStorage();
+            renderAll();
+            showToast("Tutor y su base de datos eliminados.", "info");
+        }
+    );
+}
+
+// ========================================================
+// CONTROLADORES SELECCIÓN UDA Y SEMANA CON COLORES DINÁMICOS
+// ========================================================
+function initUdaSemanaSelectors() {
+    const activeTutorCoord = AppState.tutors.find(t => t.id === AppState.activeTutorId);
+    const activeTutorDocente = AppState.tutors.find(t => t.id === AppState.loggedTutorId);
+
+    // 1. Coordinador - UDAs
+    renderUdaSelectors('uda-selector-group', 'selectUda', AppState.activeUda, activeTutorCoord);
+    // 2. Coordinador - Semanas
+    renderSemanaSelectors('semana-selector-group', 'selectSemana', AppState.activeSemana, AppState.activeUda, activeTutorCoord);
+
+    // 3. Tutor - UDAs
+    renderUdaSelectors('tutor-uda-selector', 'selectTutorUda', AppState.activeUda, activeTutorDocente);
+    // 4. Tutor - Semanas
+    renderSemanaSelectors('tutor-semana-selector', 'selectTutorSemana', AppState.activeSemana, AppState.activeUda, activeTutorDocente);
+}
+
+function renderUdaSelectors(containerId, clickHandlerName, activeVal, tutor) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    container.innerHTML = '';
+    
+    for (let u = 1; u <= TOTAL_UDAS; u++) {
+        const metrics = getUdaMetrics(tutor, u);
+        const styles = getSelectorStyle(metrics, activeVal === u);
+        
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.onclick = () => window[clickHandlerName](u);
+        btn.className = styles.btnClass;
+        btn.id = `${containerId}-btn-${u}`;
+        btn.title = `Unidad de Aprendizaje ${u} - Carga: ${metrics.uploaded}/${metrics.total} archivos`;
+        
+        btn.innerHTML = `
+            <span class="text-xs font-bold leading-none">U${u}</span>
+            <span class="${styles.labelClass}">${metrics.uploaded}/${metrics.total}</span>
+            <span class="${styles.dotClass}"></span>
+        `;
+        
+        container.appendChild(btn);
+    }
+}
+
+function renderSemanaSelectors(containerId, clickHandlerName, activeVal, activeUda, tutor) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    container.innerHTML = '';
+    
+    for (let s = 1; s <= SEMANAS_POR_UDA; s++) {
+        const metrics = getSemanaMetrics(tutor, activeUda, s);
+        const styles = getSelectorStyle(metrics, activeVal === s);
+        
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.onclick = () => window[clickHandlerName](s);
+        btn.className = styles.btnClass;
+        btn.id = `${containerId}-btn-${s}`;
+        btn.title = `Semana ${s} - Carga: ${metrics.uploaded}/${metrics.total} archivos`;
+        
+        btn.innerHTML = `
+            <span class="text-xs font-bold leading-none">S${s}</span>
+            <span class="${styles.labelClass}">${metrics.uploaded}/${metrics.total}</span>
+            <span class="${styles.dotClass}"></span>
+        `;
+        
+        container.appendChild(btn);
+    }
+}
+
+function selectUda(udaNum) {
+    AppState.activeUda = udaNum;
+    initUdaSemanaSelectors();
+    renderActiveMatriz();
+}
+
+function selectSemana(semanaNum) {
+    AppState.activeSemana = semanaNum;
+    initUdaSemanaSelectors();
+    renderActiveMatriz();
+}
+
+function selectTutorUda(udaNum) {
+    AppState.activeUda = udaNum;
+    initUdaSemanaSelectors();
+    renderTutorMatriz();
+}
+
+function selectTutorSemana(semanaNum) {
+    AppState.activeSemana = semanaNum;
+    initUdaSemanaSelectors();
+    renderTutorMatriz();
+}
+
+function renderTutorSelectDropdown() {
+    const selectCoord = document.getElementById('select-tutor');
+    const selectSim = document.getElementById('sim-tutor-select');
+    
+    selectCoord.innerHTML = '';
+    selectSim.innerHTML = '';
+    
+    AppState.tutors.forEach(tutor => {
+        const optionCoord = document.createElement('option');
+        optionCoord.value = tutor.id;
+        optionCoord.innerText = `${tutor.name} (${tutor.aula})`;
+        if (tutor.id === AppState.activeTutorId) optionCoord.selected = true;
+        selectCoord.appendChild(optionCoord);
+
+        const optionSim = document.createElement('option');
+        optionSim.value = tutor.id;
+        optionSim.innerText = `${tutor.name} (${tutor.aula})`;
+        if (tutor.id === AppState.loggedTutorId) optionSim.selected = true;
+        selectSim.appendChild(optionSim);
+    });
+}
+
+function onSelectionChange() {
+    AppState.activeTutorId = document.getElementById('select-tutor').value;
+    initUdaSemanaSelectors(); // Actualiza los selectores con la información del tutor seleccionado
+    renderActiveMatriz();
+}
+
+// ==========================================
+// RENDER DE LA MATRIZ ACTIVA DE MATERIALES (COORDINADOR)
+// ==========================================
+function renderActiveMatriz() {
+    const tutor = AppState.tutors.find(t => t.id === AppState.activeTutorId);
+    const container = document.getElementById('coordinador-materials-grid');
+    container.innerHTML = '';
+
+    if (!tutor) {
+        document.getElementById('label-active-tutor').innerText = "Ningún tutor";
+        document.getElementById('label-active-uda-progress').innerText = "0%";
+        return;
+    }
+
+    document.getElementById('label-active-tutor').innerText = tutor.name;
+    document.getElementById('label-active-uda').innerText = `UDA ${AppState.activeUda}`;
+    document.getElementById('label-active-semana').innerText = `Semana ${AppState.activeSemana}`;
+
+    const udaProgress = getTutorUdaProgress(tutor, AppState.activeUda);
+    document.getElementById('label-active-uda-progress').innerText = `${udaProgress}%`;
+
+    const activeSemanaData = tutor.udas[`uda-${AppState.activeUda}`][`semana-${AppState.activeSemana}`];
+
+    for (let m = 1; m <= MATERIALES_POR_SEMANA; m++) {
+        const doc = activeSemanaData[`material-${m}`];
+        const card = document.createElement('div');
+        
+        let borderClass = 'border-slate-200';
+        let badgeHtml = '<span class="px-2 py-0.5 text-[10px] font-bold rounded-full bg-slate-100 text-slate-500 border border-slate-200">Sin Cargar</span>';
+        let metaHtml = `
+            <div class="flex flex-col items-center justify-center text-center py-6 text-slate-400">
+                <i class="fa-regular fa-folder-open text-2xl mb-1.5"></i>
+                <p class="text-[11px] font-bold leading-normal">Falta subir documentación.</p>
+            </div>
+        `;
+        let buttonsHtml = `
+            <button onclick="openUploadModal('${tutor.id}', ${AppState.activeUda}, ${AppState.activeSemana}, ${m})" class="w-full inline-flex justify-center items-center px-4 py-2 border border-dashed border-indigo-300 hover:border-solid hover:bg-indigo-50/50 text-xs font-bold text-indigo-700 rounded-lg transition">
+                <i class="fa-solid fa-upload mr-1.5"></i> Cargar por Tutor
+            </button>
+        `;
+
+        if (doc && doc.status !== 'none') {
+            const dateFormatted = new Date(doc.uploadedAt + 'T00:00:00').toLocaleDateString('es-PE', { day: 'numeric', month: 'short' });
+            
+            if (doc.status === 'approved') {
+                borderClass = 'border-emerald-300 shadow-emerald-50/50 shadow-md';
+                badgeHtml = '<span class="px-2 py-0.5 text-[10px] font-bold rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200"><i class="fa-solid fa-circle-check"></i> Aprobado</span>';
+            } else if (doc.status === 'observed') {
+                borderClass = 'border-amber-300 shadow-amber-50/50 shadow-md';
+                badgeHtml = '<span class="px-2 py-0.5 text-[10px] font-bold rounded-full bg-amber-100 text-amber-800 border border-amber-200"><i class="fa-solid fa-circle-exclamation"></i> Observado</span>';
+            } else {
+                borderClass = 'border-blue-300 shadow-blue-50/50 shadow-md';
+                badgeHtml = '<span class="px-2 py-0.5 text-[10px] font-bold rounded-full bg-blue-100 text-blue-800 border border-blue-200"><i class="fa-solid fa-clock"></i> En Revisión</span>';
+            }
+
+            metaHtml = `
+                <div class="space-y-2 flex-1">
+                    <div class="flex items-center space-x-2 text-xs">
+                        <i class="fa-solid fa-file-pdf text-red-500 text-lg flex-shrink-0"></i>
+                        <div class="overflow-hidden">
+                            <p class="font-bold text-slate-800 truncate" title="${doc.fileName}">${doc.fileName}</p>
+                            <p class="text-[9px] text-slate-400">Tamaño: ${doc.fileSize} | ${dateFormatted}</p>
+                        </div>
+                    </div>
+                    ${doc.comments ? `
+                        <div class="p-2 bg-slate-50 border border-slate-100 rounded-lg text-[10px] text-slate-600 max-h-[80px] overflow-y-auto">
+                            <strong class="text-slate-800">Observación:</strong> ${doc.comments}
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+
+            buttonsHtml = `
+                <button onclick="openEvalModal('${tutor.id}', ${AppState.activeUda}, ${AppState.activeSemana}, ${m})" class="flex-1 inline-flex justify-center items-center px-3 py-1.5 border border-indigo-200 text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 rounded-lg transition shadow-sm">
+                    <i class="fa-solid fa-square-check mr-1"></i> Auditar
+                </button>
+                <button onclick="triggerDeleteFile('${tutor.id}', ${AppState.activeUda}, ${AppState.activeSemana}, ${m})" class="px-2 py-1.5 border border-slate-200 text-xs font-medium text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition" title="Eliminar archivo">
+                    <i class="fa-solid fa-trash-can"></i>
+                </button>
+            `;
+        }
+
+        card.className = `bg-white border ${borderClass} rounded-xl overflow-hidden flex flex-col justify-between hover:shadow-lg transition duration-200`;
+        card.innerHTML = `
+            <div class="p-4 border-b border-slate-50 flex-1 flex flex-col space-y-3">
+                <div class="flex items-start justify-between space-x-2">
+                    <span class="p-2 bg-slate-50 rounded-lg text-slate-400 font-bold text-xs">M${m}</span>
+                    ${badgeHtml}
+                </div>
+                <div>
+                    <h4 class="text-xs font-bold text-slate-900 leading-tight">${m}. ${MATERIAL_NAMES[m]}</h4>
+                </div>
+                <div class="flex-1 flex flex-col justify-end">
+                    ${metaHtml}
+                </div>
+            </div>
+            <div class="bg-slate-50 px-4 py-2.5 border-t border-slate-100 flex items-center justify-between gap-1.5">
+                ${buttonsHtml}
+            </div>
+        `;
+
+        container.appendChild(card);
+    }
+}
+
+// ==========================================
+// RENDER VISTAS INDIVIDUALES DEL TUTOR (DOCENTE)
+// ==========================================
+function renderTutorDashboard() {
+    const tutor = AppState.tutors.find(t => t.id === AppState.loggedTutorId);
+    if (!tutor) return;
+
+    const stats = getTutorProgress(tutor);
+
+    // Actualizar Panel Superior
+    document.getElementById('tutor-dash-initials').style.backgroundColor = `#${tutor.color}`;
+    document.getElementById('tutor-dash-initials').innerText = getInitials(tutor.name);
+    document.getElementById('tutor-dash-welcome').innerText = `¡Bienvenido, ${tutor.name}!`;
+    document.getElementById('tutor-dash-classroom').innerText = `Tutoría de Cargo: ${tutor.aula} (${tutor.email})`;
+
+    // Actualizar Widgets
+    document.getElementById('tutor-stat-percent').innerText = `${stats.percent}%`;
+    document.getElementById('tutor-stat-docs-ratio').innerText = `${stats.uploaded} / ${stats.expected} documentos`;
+    document.getElementById('tutor-stat-bar').style.width = `${stats.percent}%`;
+    document.getElementById('tutor-stat-approved').innerText = stats.approved;
+    document.getElementById('tutor-stat-observed').innerText = stats.observed;
+
+    // Buscar observaciones activas que requieran corrección
+    const obsContainer = document.getElementById('tutor-observados-list');
+    obsContainer.innerHTML = '';
+
+    let observedDocs = [];
+    for (let u = 1; u <= TOTAL_UDAS; u++) {
+        for (let s = 1; s <= SEMANAS_POR_UDA; s++) {
+            for (let m = 1; m <= MATERIALES_POR_SEMANA; m++) {
+                const doc = tutor.udas[`uda-${u}`][`semana-${s}`][`material-${m}`];
+                if (doc && doc.status === 'observed') {
+                    observedDocs.push({
+                        uda: u,
+                        semana: s,
+                        materialId: m,
+                        materialName: MATERIAL_NAMES[m],
+                        fileName: doc.fileName,
+                        comments: doc.comments
+                    });
+                }
+            }
+        }
+    }
+
+    if (observedDocs.length === 0) {
+        obsContainer.innerHTML = `
+            <div class="text-center py-6 text-slate-400 text-xs">
+                <i class="fa-regular fa-circle-check text-2xl text-emerald-500 mb-1.5"></i>
+                <p>Excelente. No cuentas con observaciones pendientes por resolver.</p>
+            </div>
+        `;
+        return;
+    }
+
+    observedDocs.forEach(obs => {
+        const row = document.createElement('div');
+        row.className = "flex flex-col sm:flex-row sm:items-center justify-between p-3.5 border border-amber-200 bg-amber-50/40 rounded-xl gap-3 text-xs";
+        row.innerHTML = `
+            <div class="space-y-1 overflow-hidden">
+                <p class="font-bold text-slate-900 flex items-center">
+                    <span class="bg-amber-100 text-amber-800 text-[9px] px-2 py-0.5 rounded font-black mr-2">UDA ${obs.uda} - S${obs.semana}</span>
+                    ${obs.materialName}
+                </p>
+                <p class="text-[10px] text-slate-500 truncate">Archivo: <span class="font-semibold text-slate-700">${obs.fileName}</span></p>
+                <p class="text-slate-600 text-[11px] bg-white border border-amber-100 p-2 rounded-lg mt-1"><i class="fa-solid fa-comment-dots text-amber-500 mr-1"></i>${obs.comments || 'No se detallaron comentarios.'}</p>
+            </div>
+            <button onclick="goToUploadTutorPage(${obs.uda}, ${obs.semana})" class="px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-lg text-[11px] flex-shrink-0 transition flex items-center justify-center space-x-1 shadow-sm">
+                <i class="fa-solid fa-arrows-rotate"></i>
+                <span>Subir Corrección</span>
+            </button>
+        `;
+        obsContainer.appendChild(row);
+    });
+}
+
+function goToUploadTutorPage(uda, semana) {
+    AppState.activeUda = uda;
+    AppState.activeSemana = semana;
+    initUdaSemanaSelectors();
+    changeView('tutor-matriz');
+}
+
+// ==========================================
+// RENDER DE LA MATRIZ DE CARGA DEL TUTOR
+// ==========================================
+function renderTutorMatriz() {
+    const tutor = AppState.tutors.find(t => t.id === AppState.loggedTutorId);
+    const container = document.getElementById('tutor-materials-grid');
+    container.innerHTML = '';
+
+    if (!tutor) return;
+
+    document.getElementById('tutor-matriz-label').innerText = tutor.name;
+    document.getElementById('tutor-uda-label').innerText = `UDA ${AppState.activeUda}`;
+    document.getElementById('tutor-semana-label').innerText = `Semana ${AppState.activeSemana}`;
+
+    const udaProgress = getTutorUdaProgress(tutor, AppState.activeUda);
+    document.getElementById('tutor-matriz-uda-progress').innerText = `Progreso UDA: ${udaProgress}%`;
+
+    const activeSemanaData = tutor.udas[`uda-${AppState.activeUda}`][`semana-${AppState.activeSemana}`];
+
+    for (let m = 1; m <= MATERIALES_POR_SEMANA; m++) {
+        const doc = activeSemanaData[`material-${m}`];
+        const card = document.createElement('div');
+        
+        let borderClass = 'border-slate-200';
+        let badgeHtml = '<span class="px-2 py-0.5 text-[10px] font-bold rounded-full bg-slate-100 text-slate-500 border border-slate-200">Pendiente</span>';
+        let metaHtml = `
+            <div class="flex flex-col items-center justify-center text-center py-6 text-slate-400">
+                <i class="fa-solid fa-cloud-arrow-up text-2xl text-slate-300 mb-1.5"></i>
+                <p class="text-[11px] font-bold">Sin entregar</p>
+            </div>
+        `;
+        let buttonHtml = `
+            <button onclick="openUploadModal('${tutor.id}', ${AppState.activeUda}, ${AppState.activeSemana}, ${m})" class="w-full inline-flex justify-center items-center px-4 py-2 border border-dashed border-indigo-300 hover:border-solid hover:bg-indigo-50/50 text-xs font-bold text-indigo-700 rounded-lg transition shadow-sm">
+                <i class="fa-solid fa-upload mr-1.5"></i> Adjuntar Documento
+            </button>
+        `;
+
+        if (doc && doc.status !== 'none') {
+            const dateFormatted = new Date(doc.uploadedAt + 'T00:00:00').toLocaleDateString('es-PE', { day: 'numeric', month: 'short' });
+            
+            if (doc.status === 'approved') {
+                borderClass = 'border-emerald-300 shadow-emerald-50/50 shadow-md';
+                badgeHtml = '<span class="px-2 py-0.5 text-[10px] font-bold rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200"><i class="fa-solid fa-circle-check"></i> Aprobado</span>';
+                buttonHtml = `
+                    <span class="w-full text-center text-xs font-bold text-emerald-700 p-1.5 bg-emerald-50 rounded-lg border border-emerald-100 block"><i class="fa-solid fa-circle-check mr-1"></i> Entrega Validada</span>
+                `;
+            } else if (doc.status === 'observed') {
+                borderClass = 'border-amber-300 shadow-amber-50/50 shadow-md';
+                badgeHtml = '<span class="px-2 py-0.5 text-[10px] font-bold rounded-full bg-amber-100 text-amber-800 border border-amber-200"><i class="fa-solid fa-triangle-exclamation"></i> Observado</span>';
+                buttonHtml = `
+                    <button onclick="openUploadModal('${tutor.id}', ${AppState.activeUda}, ${AppState.activeSemana}, ${m})" class="flex-1 inline-flex justify-center items-center px-3 py-1.5 border border-amber-300 hover:bg-amber-50 text-xs font-bold text-amber-800 bg-white rounded-lg transition shadow-sm">
+                        <i class="fa-solid fa-arrows-rotate mr-1"></i> Subir Corrección
+                    </button>
+                `;
+            } else {
+                borderClass = 'border-blue-300 shadow-blue-50/50 shadow-md';
+                badgeHtml = '<span class="px-2 py-0.5 text-[10px] font-bold rounded-full bg-blue-100 text-blue-800 border border-blue-200"><i class="fa-solid fa-clock"></i> En Revisión</span>';
+                buttonHtml = `
+                    <button onclick="triggerDeleteFile('${tutor.id}', ${AppState.activeUda}, ${AppState.activeSemana}, ${m})" class="w-full inline-flex justify-center items-center px-3 py-1.5 border border-slate-200 text-xs font-semibold text-slate-500 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition">
+                        <i class="fa-solid fa-trash-can mr-1"></i> Retirar Entrega
+                    </button>
+                `;
+            }
+
+            metaHtml = `
+                <div class="space-y-2 flex-1">
+                    <div class="flex items-center space-x-2 text-xs">
+                        <i class="fa-solid fa-file-pdf text-rose-600 text-lg flex-shrink-0"></i>
+                        <div class="overflow-hidden">
+                            <p class="font-bold text-slate-800 truncate" title="${doc.fileName}">${doc.fileName}</p>
+                            <p class="text-[9px] text-slate-400">Peso: ${doc.fileSize} | ${dateFormatted}</p>
+                        </div>
+                    </div>
+                    ${doc.comments ? `
+                        <div class="p-2 bg-slate-50 border border-slate-100 rounded-lg text-[10px] text-slate-600 max-h-[80px] overflow-y-auto">
+                            <strong class="text-slate-800">Nota del Evaluador:</strong> ${doc.comments}
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+        }
+
+        card.className = `bg-white border ${borderClass} rounded-xl overflow-hidden flex flex-col justify-between hover:shadow-lg transition duration-200`;
+        card.innerHTML = `
+            <div class="p-4 border-b border-slate-50 flex-1 flex flex-col space-y-3">
+                <div class="flex items-start justify-between space-x-2">
+                    <span class="p-2 bg-slate-50 rounded-lg text-slate-400 font-bold text-xs">M${m}</span>
+                    ${badgeHtml}
+                </div>
+                <div>
+                    <h4 class="text-xs font-bold text-slate-900 leading-tight">${m}. ${MATERIAL_NAMES[m]}</h4>
+                </div>
+                <div class="flex-1 flex flex-col justify-end">
+                    ${metaHtml}
+                </div>
+            </div>
+            <div class="bg-slate-50 px-4 py-2.5 border-t border-slate-100 flex items-center justify-between gap-1.5">
+                ${buttonHtml}
+            </div>
+        `;
+
+        container.appendChild(card);
+    }
+}
+
+// ==========================================
+// CONTROL DEL MODAL DE SUBIDA
+// ==========================================
+function openUploadModal(tutorId, uda, semana, materialId) {
+    currentUploadTutorId = tutorId;
+    currentUploadUda = uda;
+    currentUploadSemana = semana;
+    currentUploadMaterialId = materialId;
+
+    const materialName = MATERIAL_NAMES[materialId];
+    document.getElementById('upload-title-material').innerText = `${materialId}. ${materialName}`;
+    document.getElementById('custom-file-title').value = '';
+    
+    // Resetear visual
+    tempSelectedFile = null;
+    document.getElementById('selected-file-info').classList.add('hidden');
+    document.getElementById('dropzone-text-1').classList.remove('hidden');
+    document.getElementById('dropzone-text-2').classList.remove('hidden');
+
+    document.getElementById('modal-upload').classList.remove('hidden');
+}
+
+function closeUploadModal() {
+    document.getElementById('modal-upload').classList.add('hidden');
+}
+
+function handleFileSelect(evt) {
+    const file = evt.target.files[0];
+    if (!file) return;
+
+    tempSelectedFile = {
+        name: file.name,
+        size: formatBytes(file.size),
+        uploadedAt: new Date().toISOString().split('T')[0]
+    };
+
+    document.getElementById('selected-file-name').innerText = file.name;
+    document.getElementById('selected-file-info').classList.remove('hidden');
+    document.getElementById('dropzone-text-1').classList.add('hidden');
+    document.getElementById('dropzone-text-2').classList.add('hidden');
+}
+
+function saveUploadedFile() {
+    if (!tempSelectedFile) {
+        showToast("Por favor, selecciona un archivo válido antes de guardar.", "error");
+        return;
+    }
+
+    const tutor = AppState.tutors.find(t => t.id === currentUploadTutorId);
+    if (!tutor) return;
+
+    let finalFileName = tempSelectedFile.name;
+    const customTitle = document.getElementById('custom-file-title').value.trim();
+    if (customTitle) {
+        const fileExt = tempSelectedFile.name.split('.').pop();
+        finalFileName = `${customTitle}.${fileExt}`;
+    }
+
+    tutor.udas[`uda-${currentUploadUda}`][`semana-${currentUploadSemana}`][`material-${currentUploadMaterialId}`] = {
+        status: "pending", 
+        fileName: finalFileName,
+        fileSize: tempSelectedFile.size,
+        uploadedAt: tempSelectedFile.uploadedAt,
+        comments: ""
+    };
+
+    saveDataToLocalStorage();
+    closeUploadModal();
+    renderAll();
+    showToast(`El documento "${finalFileName}" fue cargado con éxito.`, "success");
+}
+
+function triggerDeleteFile(tutorId, uda, semana, materialId) {
+    const tutor = AppState.tutors.find(t => t.id === tutorId);
+    if (!tutor) return;
+
+    const doc = tutor.udas[`uda-${uda}`][`semana-${semana}`][`material-${materialId}`];
+    if (!doc) return;
+
+    showConfirmModal(
+        "¿Deseas retirar el archivo?",
+        `Esta acción borrará el registro de la entrega "${doc.fileName}".`,
+        "rose",
+        function() {
+            tutor.udas[`uda-${uda}`][`semana-${semana}`][`material-${materialId}`] = {
+                status: "none",
+                fileName: "",
+                fileSize: "",
+                uploadedAt: "",
+                comments: ""
+            };
+            saveDataToLocalStorage();
+            renderAll();
+            showToast("La entrega ha sido retirada.", "info");
+        }
+    );
+}
+
+// ==========================================
+// CONTROL DEL MODAL DE EVALUACIÓN
+// ==========================================
+let activeEvalStatusSelected = "pending";
+
+function openEvalModal(tutorId, uda, semana, materialId) {
+    currentEvalTutorId = tutorId;
+    currentEvalUda = uda;
+    currentEvalSemana = semana;
+    currentEvalMaterialId = materialId;
+
+    const tutor = AppState.tutors.find(t => t.id === tutorId);
+    const doc = tutor.udas[`uda-${uda}`][`semana-${semana}`][`material-${materialId}`];
+
+    if (!tutor || !doc) return;
+
+    document.getElementById('eval-title-material').innerText = `${materialId}. ${MATERIAL_NAMES[materialId]}`;
+    document.getElementById('eval-doc-tutor').innerText = `${tutor.name} (${tutor.aula})`;
+    document.getElementById('eval-doc-location').innerText = `UDA ${uda} - Semana ${semana}`;
+    document.getElementById('eval-doc-name').innerText = doc.fileName;
+    document.getElementById('eval-doc-size').innerText = doc.fileSize;
+    document.getElementById('eval-comments').value = doc.comments || '';
+
+    setEvalStatus(doc.status);
+    document.getElementById('modal-evaluacion').classList.remove('hidden');
+}
+
+function closeEvalModal() {
+    document.getElementById('modal-evaluacion').classList.add('hidden');
+}
+
+function setEvalStatus(status) {
+    activeEvalStatusSelected = status;
+
+    const btnPending = document.getElementById('btn-status-pending');
+    const btnApproved = document.getElementById('btn-status-approved');
+    const btnObserved = document.getElementById('btn-status-observed');
+
+    btnPending.className = "py-2.5 text-xs font-semibold rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50 transition flex flex-col items-center justify-center gap-1 bg-white";
+    btnApproved.className = "py-2.5 text-xs font-semibold rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50 transition flex flex-col items-center justify-center gap-1 bg-white";
+    btnObserved.className = "py-2.5 text-xs font-semibold rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50 transition flex flex-col items-center justify-center gap-1 bg-white";
+
+    if (status === 'pending') {
+        btnPending.className = "py-2.5 text-xs font-bold rounded-lg border-2 border-blue-500 bg-blue-50 text-blue-700 transition flex flex-col items-center justify-center gap-1";
+    } else if (status === 'approved') {
+        btnApproved.className = "py-2.5 text-xs font-bold rounded-lg border-2 border-emerald-500 bg-emerald-50 text-emerald-700 transition flex flex-col items-center justify-center gap-1";
+    } else if (status === 'observed') {
+        btnObserved.className = "py-2.5 text-xs font-bold rounded-lg border-2 border-amber-500 bg-amber-50 text-amber-700 transition flex flex-col items-center justify-center gap-1";
+    }
+}
+
+function saveEvalData() {
+    const tutor = AppState.tutors.find(t => t.id === currentEvalTutorId);
+    if (!tutor) return;
+
+    const doc = tutor.udas[`uda-${currentEvalUda}`][`semana-${currentEvalSemana}`][`material-${currentEvalMaterialId}`];
+    if (!doc) return;
+
+    doc.status = activeEvalStatusSelected;
+    doc.comments = document.getElementById('eval-comments').value.trim();
+
+    saveDataToLocalStorage();
+    closeEvalModal();
+    renderAll();
+    showToast("La evaluación ha sido registrada exitosamente.", "success");
+}
+
+function simulateDownload() {
+    showToast("Simulación de descarga de documento escolar completada.", "info");
+}
+
+// ==========================================
+// VISTA: REPORTES CONSOLIDADOS
+// ==========================================
+function renderConsolidadoReport() {
+    const tbody = document.getElementById('reporte-tabla-body');
+    tbody.innerHTML = '';
+
+    if (AppState.tutors.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="7" class="px-6 py-12 text-center text-slate-400">
+                    <i class="fa-solid fa-file-excel text-4xl mb-3"></i>
+                    <p class="text-sm font-semibold">No existen datos registrados para formular reportes.</p>
+                </td>
+            </tr>
+        `;
+        return;
+    }
+
+    AppState.tutors.forEach(tutor => {
+        const stats = getTutorProgress(tutor);
+        const nonDelivered = stats.expected - stats.uploaded;
+
+        const row = document.createElement('tr');
+        row.className = "hover:bg-slate-50 transition duration-150";
+        row.innerHTML = `
+            <td class="px-6 py-4 whitespace-nowrap">
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 rounded-full text-white flex items-center justify-center font-bold text-xs" style="background-color: #${tutor.color}">
+                        ${getInitials(tutor.name)}
+                    </div>
+                    <div>
+                        <div class="text-xs font-bold text-slate-900">${tutor.name}</div>
+                        <div class="text-[10px] text-slate-400">${tutor.aula}</div>
+                    </div>
+                </div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-center">
+                <div class="flex items-center justify-center space-x-2">
+                    <span class="text-xs font-extrabold text-indigo-700">${stats.percent}%</span>
+                    <div class="w-16 bg-slate-100 h-1.5 rounded-full overflow-hidden hidden sm:block">
+                        <div class="bg-indigo-600 h-full rounded-full" style="width: ${stats.percent}%"></div>
+                    </div>
+                </div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-center text-xs font-extrabold text-emerald-600">${stats.approved}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-center text-xs font-extrabold text-amber-600">${stats.observed}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-center text-xs font-extrabold text-blue-600">${stats.pending}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-center text-xs font-extrabold text-slate-400">${nonDelivered}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-right text-xs font-medium">
+                <button onclick="goToTutorMatriz('${tutor.id}')" class="text-indigo-600 hover:text-indigo-950 font-bold transition">
+                    Auditar Matriz
+                </button>
+            </td>
+        `;
+        tbody.appendChild(row);
+    });
+}
+
+// ==========================================
+// FUNCIONES DE APOYO / UTILITARIOS
+// ==========================================
+function formatBytes(bytes, decimals = 2) {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+}
+
+function showToast(message, type = 'info') {
+    const container = document.getElementById('toast-container');
+    const toast = document.createElement('div');
+    
+    let bg = 'bg-slate-900';
+    let icon = '<i class="fa-solid fa-circle-info"></i>';
+    
+    if (type === 'success') {
+        bg = 'bg-emerald-600';
+        icon = '<i class="fa-solid fa-circle-check"></i>';
+    } else if (type === 'error') {
+        bg = 'bg-rose-600';
+        icon = '<i class="fa-solid fa-circle-exclamation"></i>';
+    } else if (type === 'info') {
+        bg = 'bg-indigo-600';
+        icon = '<i class="fa-solid fa-bullhorn"></i>';
+    }
+
+    toast.className = `${bg} text-white px-4 py-3 rounded-xl shadow-lg flex items-center space-x-3 text-xs font-semibold transform translate-y-2 opacity-0 transition duration-300 max-w-sm`;
+    toast.innerHTML = `
+        <span class="text-md">${icon}</span>
+        <span>${message}</span>
+    `;
+
+    container.appendChild(toast);
+
+    setTimeout(() => {
+        toast.classList.remove('translate-y-2', 'opacity-0');
+    }, 10);
+
+    setTimeout(() => {
+        toast.classList.add('translate-y-2', 'opacity-0');
+        setTimeout(() => {
+            toast.remove();
+        }, 300);
+    }, 4000);
+}
+</script>
 </body>
 </html>
